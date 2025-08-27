@@ -85,12 +85,12 @@ def student_dashboard(request):
     from django.utils import timezone
     from .models import Event, Ticket
     
-    events = Event.objects.exclude(date__isnull=True, location__isnull=True).filter(date__gte=timezone.now().date())
-    past_events = Event.objects.exclude(date__isnull=True, location__isnull=True).filter(date__lt=timezone.now().date())
+    events = Event.objects.exclude(date__isnull=True, location__isnull=True).filter(date__gte=timezone.now())
+    past_events = Event.objects.exclude(date__isnull=True, location__isnull=True).filter(date__lt=timezone.now())
     attended_events = Ticket.objects.filter(user=request.user)
     
     return render(request, 'dashboard/student_dashboard.html', {
-        'events': events,
+        'upcoming_events': events,
         'past_events': past_events,
         'attended_events': attended_events
     })

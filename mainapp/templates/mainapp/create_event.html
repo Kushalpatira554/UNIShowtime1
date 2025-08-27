@@ -4,18 +4,6 @@
 <div class="max-w-3xl mx-auto p-8 bg-[#212A3E] rounded-2xl shadow-xl">
     <h2 class="text-3xl font-bold text-center text-[#94B4C1] mb-8">{% if edit_mode %}Edit Event{% else %}Create Event{% endif %}</h2>
 
-    <!-- Success and Error Messages -->
-    {% if messages %}
-        <div class="mb-6">
-            <div class="p-3 bg-red-500/20 text-red-300 rounded-lg text-sm text-center animate-fadeIn">
-                {% for message in messages %}
-                    {{ message }}
-                    {% if not forloop.last %}<br>{% endif %}
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
-
     <!-- Display form errors -->
     {% if form.errors %}
         <div class="mb-4 bg-red-500/20 text-red-300 rounded-lg p-4">
@@ -125,6 +113,16 @@
                 <p class="text-red-400 text-xs mt-1">{{ form.available_tickets.errors.0 }}</p>
             {% endif %}
         </div>
+        <!-- event price--  -->
+        <div class="mb-4">
+            <label for="id_ticket_price" class="block text-sm font-medium text-gray-400">Event Price</label>
+            <input type="number" id="id_ticket_price" name="ticket_price" class="block w-full px-4 py-3 bg-[#394867] text-gray-400 border border-[#547792] rounded-lg" placeholder="Enter event price" value="{{ form.ticket_price.value|default:'' }}" required>
+            {% if form.ticket_price.errors %}
+                <p class="text-red-400 text-xs mt-1">{{ form.ticket_price.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <div class="mb-4"></div>
 
         <button type="submit" class="w-full bg-[#94B4C1] text-[#212A3E] font-semibold py-3 rounded-lg hover:bg-[#ECEFCA]">{% if edit_mode %}Update Event{% else %}Create Event{% endif %}</button>
     </form>
