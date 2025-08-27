@@ -26,7 +26,7 @@
                         {% if event.is_free %}
                             <span class="text-#ECEFCA bg-#547792/30 px-2 py-0.5 rounded-full text-xs">Free Entry</span>
                         {% else %}
-                            <span class="text-#ECEFCA">${{ event.ticket_price }}</span>
+                            <span class="text-#ECEFCA">₹{{ event.ticket_price }}</span>
                         {% endif %}
                     </span>
                 </div>
