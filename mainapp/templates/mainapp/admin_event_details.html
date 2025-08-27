@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="min-h-screen p-8">
+    <div class="max-w-6xl mx-auto">
+        <div class="bg-gray-800 rounded-2xl shadow-2xl p-8 mb-8 transform transition-all hover:scale-105 animate-fadeIn">
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- Event Details -->
+                <div class="w-full md:w-1/2">
+                    <h1 class="text-3xl font-bold text-yellow-400 mb-6">{{ event.title }}</h1>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center text-[#F1F6F9]">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span>{{ event.date|date:"F j, Y g:i A" }}</span>
+                        </div>
+
+                        <div class="flex items-center text-[#F1F6F9]">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span>{{ event.location }}</span>
+                        </div>
+
+                        <div class="flex items-center text-[#F1F6F9]">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                            <span>{{ event.department.name }}</span>
+                        </div>
+
+                        <div class="flex items-center text-[#F1F6F9]">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                            </svg>
+                            <span>{{ event.tickets_left }} tickets available out of {{ event.available_tickets }}</span>
+                        </div>
+                    </div>
+
+                    <p class="text-[#F1F6F9] mb-6">{{ event.description }}</p>
+
+                    <div class="flex space-x-4">
+                        <a href="{% url 'edit_event' event.id %}" class="flex-1 bg-[#94B4C1] text-[#212A3E] text-center font-semibold py-3 rounded-lg hover:bg-[#ECEFCA] focus:outline-none focus:ring-2 focus:ring-[#94B4C1] focus:ring-offset-2 focus:ring-offset-[#213448] transition-all duration-300 transform hover:scale-105">
+                            Edit Event
+                        </a>
+                        <button onclick="confirmDelete()" class="flex-1 bg-red-500 text-[#F1F6F9] font-semibold py-3 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-[#213448] transition-all duration-300 transform hover:scale-105">
+                            Delete Event
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ticket List -->
+                <div class="w-full md:w-1/2">
+                    <h2 class="text-2xl font-semibold text-[#94B4C1] mb-6">Ticket Holders</h2>
+                    
+                    {% if tickets %}
+                        <div class="space-y-4">
+                            {% for ticket in tickets %}
+                                <div class="bg-[#394867] rounded-lg p-4 transform transition-all hover:scale-105">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-lg font-medium text-[#F1F6F9]">{{ ticket.user.username }}</h3>
+                                            <p class="text-sm text-[#9BA4B5]">{{ ticket.user.email }}</p>
+                                            {% if ticket.user.enrollment_no %}
+                                                <p class="text-sm text-[#9BA4B5]">Enrollment: {{ ticket.user.enrollment_no }}</p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-sm text-[#9BA4B5]">Booked on:</p>
+                                            <p class="text-[#F1F6F9]">{{ ticket.booked_at|date:"M j, Y" }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-12 bg-[#394867] rounded-lg">
+                            <svg class="w-16 h-16 text-[#547792] mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                            </svg>
+                            <p class="text-[#9BA4B5] text-lg">No tickets booked yet</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+    <div class="bg-[#212A3E] p-8 rounded-2xl shadow-2xl max-w-md w-full mx-4">
+        <h3 class="text-2xl font-bold text-[#94B4C1] mb-4">Confirm Delete</h3>
+        <p class="text-[#F1F6F9] mb-6">Are you sure you want to delete this event? This action cannot be undone.</p>
+        <div class="flex space-x-4">
+            <form method="POST" action="{% url 'delete_event' event.id %}" class="flex-1">
+                {% csrf_token %}
+                <button type="submit" class="w-full bg-red-500 text-[#F1F6F9] font-semibold py-3 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-[#213448] transition-all duration-300">
+                    Delete
+                </button>
+            </form>
+            <button onclick="closeDeleteModal()" class="flex-1 bg-[#394867] text-[#F1F6F9] font-semibold py-3 rounded-lg hover:bg-[#547792] focus:outline-none focus:ring-2 focus:ring-[#394867] focus:ring-offset-2 focus:ring-offset-[#213448] transition-all duration-300">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+function confirmDelete() {
+    document.getElementById('deleteModal').classList.remove('hidden');
+    document.getElementById('deleteModal').classList.add('flex');
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.add('hidden');
+    document.getElementById('deleteModal').classList.remove('flex');
+}
+</script>
+{% endblock %}

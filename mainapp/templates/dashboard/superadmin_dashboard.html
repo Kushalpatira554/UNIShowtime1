@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="w-full max-w-7xl p-8 rounded-2xl shadow-2xl relative overflow-hidden" style="background: rgba(31, 64, 55, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(118, 199, 183, 0.3);">
+        <!-- Decorative elements -->
+        <div class="absolute -top-20 -right-20 w-40 h-40 bg-purple-500 bg-opacity-20 rounded-full filter blur-3xl"></div>
+        <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-blue-500 bg-opacity-20 rounded-full filter blur-3xl"></div>
+        
+        <h2 class="text-3xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 tracking-tight relative z-10"><i class="fas fa-crown mr-2 text-yellow-400"></i>Super Admin Dashboard</h2>
+
+        <!-- Stats Section -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" data-aos="fade-up">
+            <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg p-6 rounded-lg shadow-lg border border-gray-700 border-opacity-50 hover:border-cyan-500 hover:border-opacity-50 transition-all duration-300 transform hover:-translate-y-1 group">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-semibold text-white">Total Users</h3>
+                    <i class="fas fa-users text-2xl text-cyan-400 opacity-70 group-hover:opacity-100 transition-opacity"></i>
+                </div>
+                <p class="text-4xl font-bold mt-2 text-white">{{ total_users }}</p>
+                <div class="w-full h-1 bg-gray-700 mt-4 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full" style="width: 85%"></div>
+                </div>
+            </div>
+            <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg p-6 rounded-lg shadow-lg border border-gray-700 border-opacity-50 hover:border-purple-500 hover:border-opacity-50 transition-all duration-300 transform hover:-translate-y-1 group">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-semibold text-white">Total Events</h3>
+                    <i class="fas fa-calendar-alt text-2xl text-purple-400 opacity-70 group-hover:opacity-100 transition-opacity"></i>
+                </div>
+                <p class="text-4xl font-bold mt-2 text-white">{{ total_events }}</p>
+                <div class="w-full h-1 bg-gray-700 mt-4 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-purple-400 to-pink-500 rounded-full" style="width: 75%"></div>
+                </div>
+            </div>
+            <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg p-6 rounded-lg shadow-lg border border-gray-700 border-opacity-50 hover:border-pink-500 hover:border-opacity-50 transition-all duration-300 transform hover:-translate-y-1 group">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-semibold text-white">Total Bookings</h3>
+                    <i class="fas fa-ticket-alt text-2xl text-pink-400 opacity-70 group-hover:opacity-100 transition-opacity"></i>
+                </div>
+                <p class="text-4xl font-bold mt-2 text-white">{{ total_bookings }}</p>
+                <div class="w-full h-1 bg-gray-700 mt-4 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-pink-400 to-red-500 rounded-full" style="width: 60%"></div>
+                </div>
+            </div>
+            <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg p-6 rounded-lg shadow-lg border border-gray-700 border-opacity-50 hover:border-blue-500 hover:border-opacity-50 transition-all duration-300 transform hover:-translate-y-1 group">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-semibold text-white">Departments</h3>
+                    <i class="fas fa-building text-2xl text-blue-400 opacity-70 group-hover:opacity-100 transition-opacity"></i>
+                </div>
+                <p class="text-4xl font-bold mt-2 text-white">{{ total_departments }}</p>
+                <div class="w-full h-1 bg-gray-700 mt-4 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full" style="width: 40%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manage Departments Section -->
+        <div class="mt-10" data-aos="fade-up" data-aos-delay="100">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500"><i class="fas fa-building mr-2 text-blue-400"></i>Manage Departments</h3>
+                <div class="flex gap-4 items-center">
+                    <input type="text" id="departmentSearch" placeholder="Search departments..." class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-sm text-white px-4 py-2 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for department in departments %}
+                    <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg text-white p-6 rounded-lg shadow-lg border border-gray-700 border-opacity-50 hover:border-blue-500 hover:border-opacity-50 transition-all duration-300 transform hover:-translate-y-1 department-card" data-has-active-events="{{ department.has_active_events }}" style="display: block">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-semibold">{{ department.name }}</h4>
+                            <span class="px-2 py-1 bg-gradient-to-r from-blue-400 to-indigo-500 text-xs text-white rounded-full">{{ department.code }}</span>
+                        </div>
+                        <p class="text-gray-400 mt-2">Department Code: {{ department.code }}</p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <span class="text-blue-400"><i class="fas fa-users mr-1"></i>{{ department.users_count }} users</span>
+                            <a href="{% url 'department_details' department.id %}" class="text-blue-400 hover:text-indigo-300 flex items-center transition-colors duration-300">
+                                <span>View Details</span>
+                                <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="mt-6 text-center">
+                <a href="{% url 'create_department' %}" class="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-lg hover:from-blue-600 hover:to-indigo-700 transition transform hover:-translate-y-1 hover:shadow-lg">
+                    <i class="fas fa-plus-circle mr-2"></i>Create New Department
+                </a>
+            </div>
+        </div>
+
+        <!-- Manage Users Section -->
+        <div class="mt-10" data-aos="fade-up" data-aos-delay="200">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500"><i class="fas fa-users-cog mr-2 text-purple-400"></i>Manage Users</h3>
+                <div class="flex gap-4 items-center">
+                    <input type="text" id="userSearch" placeholder="Search users..." class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-sm text-white px-4 py-2 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    <div class="flex items-center gap-4">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="radio" name="userRole" value="all" class="sr-only peer" onchange="filterUsers('all')" checked>
+                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-purple-400 to-pink-500"></div>
+                            <span class="ml-2 text-sm font-medium text-white">All</span>
+                        </label>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="radio" name="userRole" value="student" class="sr-only peer" onchange="filterUsers('student')">
+                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-purple-400 to-pink-500"></div>
+                            <span class="ml-2 text-sm font-medium text-white">Students</span>
+                        </label>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="radio" name="userRole" value="admin" class="sr-only peer" onchange="filterUsers('admin')">
+                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-purple-400 to-pink-500"></div>
+                            <span class="ml-2 text-sm font-medium text-white">Teachers</span>
+                        </label>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="radio" name="userRole" value="superadmin" class="sr-only peer" onchange="filterUsers('superadmin')">
+                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-purple-400 to-pink-500"></div>
+                            <span class="ml-2 text-sm font-medium text-white">Admins</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for user in users %}
+                    <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg text-white p-6 rounded-lg shadow-lg border border-gray-700 border-opacity-50 hover:border-purple-500 hover:border-opacity-50 transition-all duration-300 transform hover:-translate-y-1 user-card" data-role="{{ user.role }}" style="display: block;">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg">
+                                {{ user.username|first|upper }}
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-semibold">{{ user.username }}</h4>
+                                <p class="text-purple-400 text-sm">{{ user.role }}</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center mt-4">
+                            <span class="text-gray-400 text-sm"><i class="fas fa-envelope mr-1"></i>{{ user.email }}</span>
+                            <a href="{% url 'user_details' user.id %}" class="text-purple-400 hover:text-pink-300 flex items-center transition-colors duration-300">
+                                <span>View Details</span>
+                                <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="mt-6 text-center">
+                <a href="{% url 'create_user' %}" class="inline-block bg-gradient-to-r from-purple-500 to-pink-600 text-white px-6 py-3 rounded-lg hover:from-purple-600 hover:to-pink-700 transition transform hover:-translate-y-1 hover:shadow-lg">
+                    <i class="fas fa-user-plus mr-2"></i>Create New User
+                </a>
+            </div>
+        </div>
+
+        <!-- System Settings Section -->
+        <div class="mt-10 text-center p-6 bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg border border-gray-700 border-opacity-50 hover:border-cyan-500 hover:border-opacity-50 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+            <h3 class="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-2"><i class="fas fa-cogs mr-2 text-cyan-400"></i>System Settings</h3>
+            <p class="text-gray-400 mb-4">Configure system-wide settings and perform maintenance tasks.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="{% url 'system_settings' %}" class="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-cyan-600 hover:to-blue-700 transition transform hover:-translate-y-1 hover:shadow-lg">
+                    <i class="fas fa-sliders-h mr-1"></i>Settings
+                </a>
+                <a href="{% url 'system_logs' %}" class="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-cyan-600 hover:to-blue-700 transition transform hover:-translate-y-1 hover:shadow-lg">
+                    <i class="fas fa-list-alt mr-1"></i>View Logs
+                </a>
+                <a href="{% url 'system_backup' %}" class="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-cyan-600 hover:to-blue-700 transition transform hover:-translate-y-1 hover:shadow-lg">
+                    <i class="fas fa-database mr-1"></i>Backup
+                </a>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // Department search and filter functionality
+    const departmentSearch = document.getElementById('departmentSearch');
+    const departmentGrid = document.querySelector('.department-card').parentNode;
+    const departments = departmentGrid.getElementsByClassName('department-card');
+
+    departmentSearch.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        filterDepartments(searchTerm);
+    });
+
+    function filterDepartments(searchTerm = '') {
+        Array.from(departments).forEach(dept => {
+            const title = dept.querySelector('h4').textContent.toLowerCase();
+            const matchesSearch = title.includes(searchTerm);
+            dept.style.display = matchesSearch ? 'block' : 'none';
+            // Add smooth transition
+            dept.style.transition = 'all 0.3s ease-in-out';
+            dept.style.opacity = dept.style.display === 'block' ? '1' : '0';
+        });
+    }
+
+    // User search and filter functionality
+    const userSearch = document.getElementById('userSearch');
+    const userGrid = document.querySelector('.user-card').parentNode;
+    const users = userGrid.getElementsByClassName('user-card');
+    let currentUserFilter = 'all';
+
+    userSearch.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        filterAndSearchUsers(searchTerm, currentUserFilter);
+    });
+
+    function filterUsers(role) {
+        currentUserFilter = role;
+        filterAndSearchUsers(userSearch.value.toLowerCase(), role);
+    }
+
+    function filterAndSearchUsers(searchTerm, role) {
+        Array.from(users).forEach(user => {
+            const username = user.querySelector('h4').textContent.toLowerCase();
+            const userRole = user.dataset.role;
+            const matchesSearch = username.includes(searchTerm);
+            const matchesRole = role === 'all' || userRole === role;
+            user.style.display = (matchesSearch && matchesRole) ? 'block' : 'none';
+            // Add smooth transition
+            user.style.transition = 'all 0.3s ease-in-out';
+            user.style.opacity = user.style.display === 'block' ? '1' : '0';
+        });
+    }
+
+    // Initialize with all departments and users visible
+    window.addEventListener('load', function() {
+        filterDepartments();
+        filterUsers('all');
+    });
+</script>
+
+
+{% endblock %}

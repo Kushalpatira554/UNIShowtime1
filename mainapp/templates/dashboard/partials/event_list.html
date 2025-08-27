@@ -1,0 +1,59 @@
+{% for event in events %}
+    <div class="relative overflow-hidden rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300" 
+         style="background: linear-gradient(135deg, rgba(33, 52, 72, 0.9), rgba(57, 72, 103, 0.9)); backdrop-filter: blur(10px); border: 1px solid rgba(148, 180, 193, 0.3);">
+        
+        <!-- Decorative elements -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-transparent to-#94B4C1 opacity-10 rounded-bl-full"></div>
+        <div class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-transparent to-#ECEFCA opacity-10 rounded-tr-full"></div>
+        
+        <div class="relative p-6 z-10">
+            <div class="flex justify-between items-start mb-4">
+                <h4 class="text-xl font-semibold text-#F1F6F9">{{ event.title }}</h4>
+                <span class="px-3 py-1 bg-#94B4C1 text-xs text-#213448 font-semibold rounded-full shadow-md">{{ event.category }}</span>
+            </div>
+            
+            <p class="text-#94B4C1 mt-2">{{ event.description|truncatewords:20 }}</p>
+            
+            <div class="flex justify-between items-center mt-4 text-sm text-#94B4C1">
+                <span class="flex items-center"><i class="far fa-calendar mr-2"></i>{{ event.date|date:"F j, Y" }}</span>
+                <span class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i>{{ event.location }}</span>
+            </div>
+            
+            <div class="mt-4 flex justify-between items-center">
+                <div class="flex flex-col">
+                    <span class="text-#ECEFCA flex items-center"><i class="fas fa-users mr-2"></i>{{ event.tickets_left }} tickets left</span>
+                    <span class="text-sm mt-1">
+                        {% if event.is_free %}
+                            <span class="text-#ECEFCA bg-#547792/30 px-2 py-0.5 rounded-full text-xs">Free Entry</span>
+                        {% else %}
+                            <span class="text-#ECEFCA">${{ event.ticket_price }}</span>
+                        {% endif %}
+                    </span>
+                </div>
+                
+                <div class="flex items-center space-x-2">
+                    {% if request.user.role == 'admin' or request.user.role == 'superadmin' %}
+                        <a href="{% url 'edit_event' event.id %}" 
+                           class="flex items-center px-3 py-1.5 rounded-lg bg-#547792/50 text-#F1F6F9 hover:bg-#547792/70 transition-all duration-300 backdrop-filter backdrop-blur-sm border border-#547792/30">
+                            <span>Edit</span>
+                            <i class="fas fa-edit ml-2"></i>
+                        </a>
+                        <a href="{% url 'admin_event_details' event.id %}" 
+                           class="flex items-center px-3 py-1.5 rounded-lg bg-#547792/50 text-#F1F6F9 hover:bg-#547792/70 transition-all duration-300 backdrop-filter backdrop-blur-sm border border-#547792/30">
+                            <span>Details</span>
+                            <i class="fas fa-info-circle ml-2"></i>
+                        </a>
+                    {% else %}
+                        {% if event.id %}
+                        <a href="{% url 'event_details' event.id %}" 
+                           class="flex items-center px-3 py-1.5 rounded-lg bg-#547792/50 text-#F1F6F9 hover:bg-#547792/70 transition-all duration-300 backdrop-filter backdrop-blur-sm border border-#547792/30">
+                            <span>Book Now</span>
+                            <i class="fas fa-ticket-alt ml-2"></i>
+                         </a>
+                         {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

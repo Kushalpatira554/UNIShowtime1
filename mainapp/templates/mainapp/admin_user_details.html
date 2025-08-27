@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-2xl p-8 bg-[#212A3E] rounded-2xl shadow-2xl transform transition-all hover:scale-105 animate-fadeIn">
+        <h2 class="text-3xl font-bold text-center text-[#94B4C1] mb-6 tracking-tight">User Details</h2>
+
+        <!-- User Profile Section -->
+        <div class="flex items-center mb-6 space-x-6">
+            <div class="w-24 h-24 bg-[#394867] rounded-full overflow-hidden">
+                <img src="{{ user.profile_image.url }}" alt="Profile Picture" class="w-full h-full object-cover">
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold text-[#94B4C1]">{{ user.username }}</h3>
+                <p class="text-[#9BA4B5]">{{ user.role|capfirst }}</p>
+            </div>
+        </div>
+
+        <!-- User Info -->
+        <div class="space-y-6 mb-6">
+            <div class="flex items-center justify-between">
+                <p class="text-sm font-medium text-[#F1F6F9]">Email:</p>
+                <p class="text-[#9BA4B5]">{{ user.email }}</p>
+            </div>
+            <div class="flex items-center justify-between">
+                <p class="text-sm font-medium text-[#F1F6F9]">Enrollment No:</p>
+                <p class="text-[#9BA4B5]">{{ user.enrollment_no }}</p>
+            </div>
+            <div class="flex items-center justify-between">
+                <p class="text-sm font-medium text-[#F1F6F9]">Department:</p>
+                <p class="text-[#9BA4B5]">{{ user.department }}</p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="space-x-4 flex items-center justify-between">
+            <a href="{% url 'edit_user' user.id %}" class="inline-block bg-[#94B4C1] text-[#212A3E] px-6 py-2 rounded-lg hover:bg-[#ECEFCA] focus:outline-none focus:ring-2 focus:ring-[#94B4C1] transition-all duration-300 transform hover:scale-105">Edit User</a>
+            <a href="{% url 'admin_dashboard' %}" class="inline-block bg-[#394867] text-[#F1F6F9] px-6 py-2 rounded-lg hover:bg-[#547792] focus:outline-none focus:ring-2 focus:ring-[#94B4C1] transition-all duration-300 transform hover:scale-105">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

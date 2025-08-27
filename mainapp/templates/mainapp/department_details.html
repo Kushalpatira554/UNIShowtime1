@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mx-auto px-4 py-8 mt-20">
+    <div class="max-w-5xl mx-auto">
+        <!-- Department Info Card with Glass Morphism -->
+        <div class="relative rounded-xl overflow-hidden shadow-2xl mb-8" 
+             style="background: linear-gradient(135deg, rgba(33, 52, 72, 0.85), rgba(57, 72, 103, 0.85)); backdrop-filter: blur(10px); border: 1px solid rgba(148, 180, 193, 0.3);">
+            
+            <!-- Decorative elements -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-transparent to-#94B4C1 opacity-10 rounded-bl-full"></div>
+            <div class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-transparent to-#ECEFCA opacity-10 rounded-tr-full"></div>
+            
+            <div class="relative p-8 z-10">
+                <div class="flex items-start justify-between mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-#F1F6F9 mb-2">{{ department.name }}</h1>
+                        <div class="px-3 py-1 inline-block bg-#547792/50 text-#94B4C1 text-sm rounded-full backdrop-filter backdrop-blur-sm border border-#547792/30">
+                            Department Code: {{ department.code }}
+                        </div>
+                    </div>
+                    {% if request.user.is_super_admin %}
+                        <div class="flex space-x-3">
+                            <a href="{% url 'edit_department' department.id %}" 
+                               class="flex items-center px-4 py-2 rounded-lg bg-#547792 text-#F1F6F9 hover:bg-#94B4C1 hover:text-#213448 transition-all duration-300 shadow-lg transform hover:scale-105">
+                                <i class="fas fa-edit mr-2"></i>Edit
+                            </a>
+                            <button onclick="confirmDelete()" 
+                                    class="flex items-center px-4 py-2 rounded-lg bg-red-500/80 text-#F1F6F9 hover:bg-red-600 transition-all duration-300 shadow-lg transform hover:scale-105">
+                                <i class="fas fa-trash-alt mr-2"></i>Delete
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Department Statistics -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="relative overflow-hidden rounded-xl p-6 text-center" 
+                         style="background: linear-gradient(135deg, rgba(33, 52, 72, 0.9), rgba(57, 72, 103, 0.7)); backdrop-filter: blur(8px); border: 1px solid rgba(148, 180, 193, 0.2);">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-transparent to-#94B4C1 opacity-10 rounded-bl-full"></div>
+                        <h3 class="text-sm font-medium text-#94B4C1 mb-2">Total Users</h3>
+                        <p class="text-3xl font-bold text-#F1F6F9">{{ users.count }}</p>
+                    </div>
+                    <div class="relative overflow-hidden rounded-xl p-6 text-center" 
+                         style="background: linear-gradient(135deg, rgba(33, 52, 72, 0.9), rgba(57, 72, 103, 0.7)); backdrop-filter: blur(8px); border: 1px solid rgba(148, 180, 193, 0.2);">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-transparent to-#94B4C1 opacity-10 rounded-bl-full"></div>
+                        <h3 class="text-sm font-medium text-#94B4C1 mb-2">Total Events</h3>
+                        <p class="text-3xl font-bold text-#F1F6F9">{{ department.events.count }}</p>
+                    </div>
+                    <div class="relative overflow-hidden rounded-xl p-6 text-center" 
+                         style="background: linear-gradient(135deg, rgba(33, 52, 72, 0.9), rgba(57, 72, 103, 0.7)); backdrop-filter: blur(8px); border: 1px solid rgba(148, 180, 193, 0.2);">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-transparent to-#94B4C1 opacity-10 rounded-bl-full"></div>
+                        <h3 class="text-sm font-medium text-#94B4C1 mb-2">Active Events</h3>
+                        <p class="text-3xl font-bold text-#F1F6F9">{{ department.events.filter.date__gte:now.count }}</p>
+                    </div>
+                </div>
+
+                <!-- Department Users -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-#ECEFCA mb-4 flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        Department Users
+                    </h2>
+                    <div class="overflow-x-auto rounded-xl" 
+                         style="background: rgba(33, 52, 72, 0.5); backdrop-filter: blur(8px); border: 1px solid rgba(148, 180, 193, 0.2);">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="text-left text-#94B4C1 border-b border-#547792/30">
+                                    <th class="px-4 py-3">Name</th>
+                                    <th class="px-4 py-3">Role</th>
+                                    <th class="px-4 py-3">Email</th>
+                                    <th class="px-4 py-3">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-#547792/20">
+                                {% for user in users %}
+                                    <tr class="text-#F1F6F9 hover:bg-#547792/20 transition-colors">
+                                        <td class="px-4 py-3">
+                                            <div class="flex items-center space-x-3">
+                                                {% if user.profile_image %}
+                                                    <img src="{{ user.profile_image.url }}" alt="{{ user.username }}" class="w-10 h-10 rounded-full object-cover border-2 border-#547792/50">
+                                                {% else %}
+                                                    <div class="w-10 h-10 rounded-full bg-#547792 flex items-center justify-center text-sm font-bold shadow-md">
+                                                        {{ user.username|make_list|first|upper }}
+                                                    </div>
+                                                {% endif %}
+                                                <span>{{ user.username }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span class="px-2 py-1 bg-#547792/30 text-#ECEFCA text-xs rounded-full">
+                                                {{ user.get_role_display }}
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-3">{{ user.email }}</td>
+                                        <td class="px-4 py-3">
+                                            <a href="{% url 'user_details' user.id %}" 
+                                               class="p-2 rounded-full bg-#547792/20 text-#94B4C1 hover:bg-#547792/40 hover:text-#ECEFCA transition-all inline-flex">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="px-4 py-6 text-center text-#94B4C1">
+                                            <div class="flex flex-col items-center">
+                                                <svg class="w-12 h-12 mb-3 text-#547792/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                <p>No users found in this department.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Department Events -->
+                <div>
+                    <h2 class="text-2xl font-bold text-#ECEFCA mb-4 flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Department Events
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {% for event in department.events.all %}
+                            <div class="relative overflow-hidden rounded-xl p-4 transform hover:scale-105 transition-all duration-300" 
+                                 style="background: linear-gradient(135deg, rgba(33, 52, 72, 0.7), rgba(57, 72, 103, 0.5)); backdrop-filter: blur(8px); border: 1px solid rgba(148, 180, 193, 0.2);">
+                                <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-transparent to-#94B4C1 opacity-10 rounded-bl-full"></div>
+                                <h3 class="text-lg font-semibold text-#F1F6F9 mb-1">{{ event.title }}</h3>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-#94B4C1 text-sm flex items-center">
+                                        <i class="far fa-calendar mr-2"></i>{{ event.date|date:"F d, Y" }}
+                                    </span>
+                                    <span class="px-2 py-0.5 bg-#547792/30 text-#ECEFCA text-xs rounded-full">
+                                        {{ event.category }}
+                                    </span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-#94B4C1">
+                                        <i class="fas fa-ticket-alt mr-1"></i> {{ event.tickets_left }}/{{ event.available_tickets }} tickets
+                                    </span>
+                                    <a href="{% url 'event_details' event.id %}" 
+                                       class="flex items-center text-#ECEFCA hover:text-#F1F6F9 text-sm transition-colors">
+                                        View Details 
+                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="col-span-2 p-6 text-center rounded-xl" 
+                                 style="background: rgba(33, 52, 72, 0.5); backdrop-filter: blur(8px); border: 1px solid rgba(148, 180, 193, 0.2);">
+                                <svg class="w-12 h-12 mx-auto mb-3 text-#547792/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <p class="text-#94B4C1">No events found for this department.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal with Glass Morphism -->
+<div id="deleteModal" class="hidden fixed inset-0 bg-#213448/70 backdrop-filter backdrop-blur-sm flex items-center justify-center z-50">
+    <div class="relative rounded-xl overflow-hidden shadow-2xl max-w-md w-full mx-4 transform transition-all duration-300 animate-fadeIn" 
+         style="background: linear-gradient(135deg, rgba(33, 52, 72, 0.9), rgba(57, 72, 103, 0.9)); backdrop-filter: blur(10px); border: 1px solid rgba(148, 180, 193, 0.3);">
+        
+        <!-- Decorative elements -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-transparent to-red-400 opacity-10 rounded-bl-full"></div>
+        <div class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-transparent to-#94B4C1 opacity-10 rounded-tr-full"></div>
+        
+        <div class="relative p-8 z-10">
+            <h2 class="text-2xl font-bold text-#F1F6F9 mb-4 flex items-center">
+                <svg class="w-6 h-6 mr-2 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                Confirm Delete
+            </h2>
+            <p class="text-#94B4C1 mb-6">Are you sure you want to delete this department? This action cannot be undone.</p>
+            <div class="flex justify-end space-x-4">
+                <button onclick="closeDeleteModal()" 
+                        class="px-4 py-2 rounded-lg bg-#547792/70 text-#F1F6F9 hover:bg-#547792 transition-all duration-300 backdrop-filter backdrop-blur-sm border border-#547792/30">
+                    Cancel
+                </button>
+                <form action="{% url 'delete_department' department.id %}" method="POST" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" 
+                            class="px-4 py-2 rounded-lg bg-red-500/80 text-#F1F6F9 hover:bg-red-600 transition-all duration-300 backdrop-filter backdrop-blur-sm border border-red-500/30">
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function confirmDelete() {
+    document.getElementById('deleteModal').classList.remove('hidden');
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.add('hidden');
+}
+</script>
+{% endblock %}

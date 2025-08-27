@@ -1,0 +1,961 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniShowTime</title>
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Anime.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <!-- Form Enhancements -->
+    <link rel="stylesheet" href="{% static 'css/form-enhancements.css' %}">
+    <script src="{% static 'js/form-enhancements.js' %}"></script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #a5b4fc;
+            --primary-rgb: 99, 102, 241;   /* Indigo */
+            --secondary: #ec4899;
+            --secondary-dark: #db2777;
+            --secondary-light: #fbcfe8;
+            --secondary-rgb: 236, 72, 153; /* Pink */
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --light: #f8fafc;
+            --light-dark: #e2e8f0;
+            --accent: #10b981;
+            --accent-dark: #059669;
+            --accent-light: #a7f3d0;
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            transition: background 0.5s ease;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            width: 100%;
+            z-index: 50;
+            top: 0;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .navbar.scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.4);
+        }
+
+        .navbar-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+            filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.3));
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .navbar-title:hover {
+            filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.5));
+            transform: scale(1.05);
+        }
+
+        .navbar-title::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -5px;
+            left: 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 3px;
+        }
+
+        .navbar-title:hover::after {
+            width: 100%;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .navbar-item {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            margin: 0 0.25rem;
+        }
+
+        .navbar-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+            border-radius: 0.5rem;
+        }
+
+        .navbar-item:hover {
+            color: var(--primary-light);
+            transform: translateY(-2px);
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+        }
+
+        .navbar-item:hover::before {
+            left: 0;
+        }
+
+        .navbar-button {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: var(--light);
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            border: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .navbar-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: -1;
+            opacity: 0;
+        }
+
+        .navbar-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+
+        .navbar-button:hover::before {
+            opacity: 1;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            transform: translateY(-20px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-top: none;
+            border-radius: 0 0 16px 16px;
+            clip-path: inset(0 0 100% 0);
+        }
+
+        .mobile-menu.open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+            clip-path: inset(0 0 0 0);
+        }
+        
+        .mobile-menu a {
+            margin-bottom: 0.75rem;
+            transform: translateX(-10px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition-delay: calc(var(--i) * 0.05s);
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        .mobile-menu.open a {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(to right, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+            color: var(--light);
+            padding: 3rem 0 2rem;
+            margin-top: auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+            animation: shimmer 4s infinite linear;
+        }
+        
+        /* Removed duplicate shimmer animation */
+
+        .footer a {
+            color: var(--primary-light);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .footer a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -3px;
+            left: 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 2px;
+        }
+
+        .footer a:hover {
+            color: var(--light);
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+        }
+
+        .footer a:hover::after {
+            width: 100%;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-heading {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary-light), var(--secondary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding-top: 5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Background Gradient Animation */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(-45deg, var(--dark), var(--dark-light), var(--primary-dark), var(--secondary-dark));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Card Effects */
+        .card {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(99, 102, 241, 0.4);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), transparent);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            background: rgba(30, 41, 59, 0.8);
+            color: var(--light);
+            padding: 1.25rem;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(99, 102, 241, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), transparent);
+        }
+
+        .card-body {
+            padding: 1.75rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Glass Card Variant */
+        .card-glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.75rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--light);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+            transform: translateY(-3px);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(99, 102, 241, 0.1);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+            transform: translateY(-3px);
+            color: var(--primary-light);
+            border-color: var(--primary-light);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary-light);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes spin-reverse {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        @keyframes spin-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .animate-spin-reverse {
+            animation: spin-reverse 1.5s linear infinite;
+        }
+
+        .animate-spin-slow {
+            animation: spin-slow 3s linear infinite;
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Glowing effect */
+        .glow-effect {
+            position: relative;
+        }
+
+        .glow-effect::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: inherit;
+            background: linear-gradient(45deg, #94B4C1, transparent, #94B4C1);
+            background-size: 200%;
+            animation: glowing 3s linear infinite;
+            filter: blur(10px);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glow-effect:hover::after {
+            opacity: 0.7;
+        }
+
+        @keyframes glowing {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Animated Elements */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .rotating {
+            animation: rotate 20s linear infinite;
+        }
+        
+        .shimmer-text {
+            background: linear-gradient(90deg, 
+                var(--primary-light), 
+                var(--secondary-light), 
+                var(--primary-light));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+        
+        /* Scroll Animations */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Particle background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background-color: transparent;
+            pointer-events: none;
+        }
+        
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(var(--primary-rgb), 0.3);
+            border: 1px solid var(--primary);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            transition: width 0.3s, height 0.3s, background 0.3s;
+            mix-blend-mode: screen;
+            backdrop-filter: blur(2px);
+        }
+        
+        .custom-cursor.hover {
+            width: 40px;
+            height: 40px;
+            background: rgba(var(--secondary-rgb), 0.2);
+            border-color: var(--secondary);
+        }
+    </style>
+    <!-- Custom Cursor JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create custom cursor element
+            const cursor = document.createElement('div');
+            cursor.classList.add('custom-cursor');
+            document.body.appendChild(cursor);
+            
+            // Update cursor position
+            document.addEventListener('mousemove', function(e) {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+            
+            // Add hover effect on interactive elements
+            const interactiveElements = document.querySelectorAll('a, button, .btn, .card, input, select, textarea');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            });
+        });
+    </script>
+</head>
+<!-- Loader -->
+<div id="loading-screen" class="fixed inset-0 flex items-center justify-center bg-black z-50">
+    <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-500"></div>
+</div>
+
+
+
+<body>
+    <div id="global-loading-screen" class="fixed inset-0 z-[9999] flex items-center justify-center bg-gradient-to-r from-indigo-900 to-purple-900 opacity-100">
+        <div class="text-center">
+            <div class="relative w-24 h-24 mx-auto mb-4">
+                <div class="absolute inset-0 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                <div class="absolute inset-2 border-4 border-purple-500 border-b-transparent rounded-full animate-spin-reverse"></div>
+                <div class="absolute inset-4 border-4 border-pink-500 border-l-transparent rounded-full animate-spin-slow"></div>
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-2">Loading...</h2>
+            <p class="text-gray-400">Please wait...</p>
+        </div>
+    </div>
+    <div id="global-content" class="opacity-0">
+
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+    <div class="bg-gradient"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="main-navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <!-- Title -->
+                <a href="{% url 'dashboard' %}" class="navbar-title"><i class="fas fa-ticket-alt mr-2"></i>Uni<span class="text-gradient">ShowTime</span></a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-4">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'dashboard' %}" class="navbar-item"><i class="fas fa-home mr-1"></i> Dashboard</a>
+                        <a href="{% url 'contact' %}" class="navbar-item"><i class="fas fa-envelope mr-1"></i> Contact</a>
+                        {% if user.role == 'admin' or user.role == 'superadmin' %}
+                            <a href="{% url 'create_event' %}" class="navbar-item"><i class="fas fa-calendar-plus mr-1"></i> Create Event</a>
+                        {% endif %}
+                        <a href="{% url 'logout' %}" class="navbar-button"><i class="fas fa-sign-out-alt mr-1"></i> Logout</a>
+                        <div class="flex items-center space-x-2 group">
+                            {% if user.profile_image %}
+                                <img src="{{ user.profile_image.url }}" class="w-8 h-8 rounded-full object-cover border-2 border-gray-900 hover:border-yellow-400 transition cursor-pointer" alt="{{ user.username }}'s profile picture">
+                                <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 opacity-0 group-hover:opacity-100 group-hover:visible transition-all duration-300 invisible" style="background: linear-gradient(135deg, rgba(57, 72, 103, 0.95), rgba(33, 52, 72, 0.9)); backdrop-filter: blur(10px); border: 1px solid rgba(148, 180, 193, 0.3);">
+                                    <a href="{% url 'edit_profile' %}" class="block px-4 py-2 text-sm text-gray-100 hover:bg-gray-700/50"><i class="fas fa-edit mr-2"></i>Edit Profile</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="navbar-button"><i class="fas fa-sign-in-alt mr-1"></i> Login</a>
+                            <a href="{% url 'register' %}" class="navbar-button"><i class="fas fa-user-plus mr-1"></i> Register</a>
+                        {% endif %}
+                </div>
+
+                <!-- Mobile Menu Toggle -->
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none p-2 rounded-md hover:bg-gray-800/50 transition-all duration-300 border border-gray-700/30 backdrop-blur-sm" aria-label="Toggle menu">
+                    <svg class="w-6 h-6 text-gray-100" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="mobile-menu md:hidden">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="block py-2 px-4 text-gray-100 hover:bg-gray-700/50 rounded-lg mb-2 backdrop-blur-sm bg-gray-800/30 border border-gray-700/30"><i class="fas fa-home mr-2"></i> Dashboard</a>
+                    <a href="{% url 'contact' %}" class="block py-2 px-4 text-gray-100 hover:bg-gray-700/50 rounded-lg mb-2 backdrop-blur-sm bg-gray-800/30 border border-gray-700/30"><i class="fas fa-envelope mr-2"></i> Contact</a>
+                    {% if user.role == 'admin' or user.role == 'superadmin' %}
+                        <a href="{% url 'create_event' %}" class="block py-2 px-4 text-gray-100 hover:bg-gray-700/50 rounded-lg mb-2 backdrop-blur-sm bg-gray-800/30 border border-gray-700/30"><i class="fas fa-calendar-plus mr-2"></i> Create Event</a>
+                    {% endif %}
+                    <a href="{% url 'logout' %}" class="block py-2 px-4 text-gray-100 hover:bg-gray-700/50 rounded-lg mb-2 backdrop-blur-sm bg-gray-800/30 border border-gray-700/30"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="block py-2 px-4 text-gray-100 hover:bg-gray-700/50 rounded-lg mb-2 backdrop-blur-sm bg-gray-800/30 border border-gray-700/30"><i class="fas fa-sign-in-alt mr-2"></i> Login</a>
+                    <a href="{% url 'register' %}" class="block py-2 px-4 text-gray-100 hover:bg-gray-700/50 rounded-lg mb-2 backdrop-blur-sm bg-gray-800/30 border border-gray-700/30"><i class="fas fa-user-plus mr-2"></i> Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20" data-aos="fade-up" data-aos-duration="800">
+        {% block content %}
+        <!-- Page-specific content goes here -->
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="footer-grid py-8">
+                <div data-aos="fade-right" data-aos-delay="100">
+                    <h3 class="footer-heading mb-4"><i class="fas fa-ticket-alt mr-2"></i>UniShowTime</h3>
+                    <p class="text-sm text-gray-400">Your ultimate platform for university events and entertainment.</p>
+                    <div class="mt-6">
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline py-2 px-4 text-sm">Get Started</a>
+                    </div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="footer-heading mb-4"><i class="fas fa-link mr-2"></i>Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="{% url 'dashboard' %}" class="text-sm flex items-center"><i class="fas fa-angle-right mr-2 text-xs opacity-70"></i>Dashboard</a></li>
+                        {% if user.is_authenticated and user.role == 'admin' or user.role == 'superadmin' %}
+                            <li><a href="{% url 'create_event' %}" class="text-sm flex items-center"><i class="fas fa-angle-right mr-2 text-xs opacity-70"></i>Create Event</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'login' %}" class="text-sm flex items-center"><i class="fas fa-angle-right mr-2 text-xs opacity-70"></i>Login</a></li>
+                        <li><a href="{% url 'register' %}" class="text-sm flex items-center"><i class="fas fa-angle-right mr-2 text-xs opacity-70"></i>Register</a></li>
+                    </ul>
+                </div>
+                <div data-aos="fade-left" data-aos-delay="300">
+                    <h3 class="footer-heading mb-4"><i class="fas fa-envelope mr-2"></i>Contact</h3>
+                    <p class="text-sm text-gray-400 flex items-center"><i class="fas fa-envelope mr-3 opacity-70"></i>Email: <a href="mailto:kushalpatira@gmail.com">Kushalpatira@gmail.com</a></p>
+                    <p class="text-sm text-gray-400 flex items-center"><i class="fas fa-phone mr-3 opacity-70"></i>Phone: +91 95456 72001</p>
+                    <div class="mt-6 flex space-x-4">
+                        <a href="#" class="text-yellow-400 hover:text-white transition hover:scale-110"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-yellow-400 hover:text-white transition hover:scale-110"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-yellow-400 hover:text-white transition hover:scale-110"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-yellow-400 hover:text-white transition hover:scale-110"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-opacity-20 mt-8 pt-6 text-center">
+                <p class="opacity-70">UNDER DEVELOPMENT.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Main Content -->
+<div id="main-content" class="opacity-0 transition-opacity duration-500">
+</div>
+
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.querySelector('#menu-icon');
+        const mobileMenuItems = document.querySelectorAll('#mobile-menu a');
+
+        // Set initial delay variable for each menu item
+        mobileMenuItems.forEach((item, index) => {
+            item.style.setProperty('--i', index);
+        });
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+            // Toggle between hamburger and close icon
+            if (mobileMenu.classList.contains('open')) {
+                menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+                // Animate menu items when opening
+                anime({
+                    targets: '#mobile-menu a',
+                    translateX: [-20, 0],
+                    opacity: [0, 1],
+                    delay: anime.stagger(50),
+                    easing: 'easeOutExpo'
+                });
+            } else {
+                menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+                // Reset menu items when closing
+                anime({
+                    targets: '#mobile-menu a',
+                    translateX: -10,
+                    opacity: 0,
+                    duration: 300,
+                    easing: 'easeOutExpo'
+                });
+            }
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target) && mobileMenu.classList.contains('open')) {
+                mobileMenu.classList.remove('open');
+                menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+                // Reset menu items when closing
+                anime({
+                    targets: '#mobile-menu a',
+                    translateX: -10,
+                    opacity: 0,
+                    duration: 300,
+                    easing: 'easeOutExpo'
+                });
+            }
+        });
+
+// Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('main-navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+    </script>
+    <script>
+        // Wrap all JavaScript initialization in one DOMContentLoaded event
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS with options
+            AOS.init({
+                duration: 800,
+                easing: 'ease-out',
+                once: true
+            });
+            
+            // Handle loading screen transition
+            const loadingScreen = document.getElementById('global-loading-screen');
+            const globalContent = document.getElementById('global-content');
+            
+            if (loadingScreen && globalContent) {
+                setTimeout(function() {
+                     console.log('Setting loadingScreen opacity to 0 and globalContent opacity to 1');
+                     loadingScreen.style.opacity = '0';
+                     globalContent.style.opacity = '1';
+                     setTimeout(() => {
+                         console.log('Setting loadingScreen display to none');
+                         loadingScreen.style.display = 'none';
+                     }, 500);
+                 }, 300);
+            }
+
+            // Create and initialize custom cursor
+            const cursor = document.createElement('div');
+            cursor.classList.add('custom-cursor');
+            document.body.appendChild(cursor);
+            
+            // Update cursor position
+            document.addEventListener('mousemove', function(e) {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+            
+            // Add hover effect on interactive elements
+            const interactiveElements = document.querySelectorAll('a, button, .btn, .card, input, select, textarea');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            });
+
+            // Initialize mobile menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.querySelector('#menu-icon');
+            const mobileMenuItems = document.querySelectorAll('#mobile-menu a');
+
+            // Set initial delay variable for each menu item
+            mobileMenuItems.forEach((item, index) => {
+                item.style.setProperty('--i', index);
+            });
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('open');
+                if (mobileMenu.classList.contains('open')) {
+                    menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+                    anime({
+                        targets: '#mobile-menu a',
+                        translateX: [-20, 0],
+                        opacity: [0, 1],
+                        delay: anime.stagger(50),
+                        easing: 'easeOutExpo'
+                    });
+                } else {
+                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+                    anime({
+                        targets: '#mobile-menu a',
+                        translateX: -10,
+                        opacity: 0,
+                        duration: 300,
+                        easing: 'easeOutExpo'
+                    });
+                }
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target) && mobileMenu.classList.contains('open')) {
+                    mobileMenu.classList.remove('open');
+                    menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+                    anime({
+                        targets: '#mobile-menu a',
+                        translateX: -10,
+                        opacity: 0,
+                        duration: 300,
+                        easing: 'easeOutExpo'
+                    });
+                }
+            });
+
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.getElementById('main-navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        });
+    
+    window.addEventListener("load", function () {
+        const loader = document.getElementById("loading-screen");
+        const content = document.getElementById("main-content");
+
+        // Hide loader
+        loader.style.display = "none";
+
+        // Fade in main content
+        content.style.opacity = "1";
+    });
+    </script>

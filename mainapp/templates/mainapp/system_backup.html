@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-4">
+    <div class="w-full max-w-6xl p-8 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-2xl shadow-2xl border border-gray-700 border-opacity-50">
+        <h2 class="text-3xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
+            <i class="fas fa-database mr-2"></i>System Backup & Recovery
+        </h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Create Backup -->
+            <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg p-6 rounded-lg shadow-lg border border-gray-700 border-opacity-50">
+                <h3 class="text-xl font-semibold text-white mb-4">
+                    <i class="fas fa-download mr-2 text-green-400"></i>Create Backup
+                </h3>
+                <form method="post" action="{% url 'create_backup' %}" class="space-y-4">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Backup Type</label>
+                        <select name="backup_type" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500">
+                            <option value="full">Full Database</option>
+                            <option value="events">Events Only</option>
+                            <option value="users">Users Only</option>
+                            <option value="media">Media Files</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Backup Name</label>
+                        <input type="text" name="backup_name" placeholder="backup_{{ current_date }}" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500">
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" name="include_media" checked class="mr-2 h-4 w-4 text-green-600 bg-gray-700 border-gray-600 rounded focus:ring-green-500">
+                        <label class="text-sm font-medium text-gray-300">Include Media Files</label>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-blue-600 text-white py-2 px-4 rounded-lg hover:from-green-600 hover:to-blue-700 transition">
+                        <i class="fas fa-download mr-2"></i>Create Backup
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Restore Backup -->
+            <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg p-6 rounded-lg shadow-lg border border-gray-700 border-opacity-50">
+                <h3 class="text-xl font-semibold text-white mb-4">
+                    <i class="fas fa-upload mr-2 text-yellow-400"></i>Restore Backup
+                </h3>
+                <form method="post" action="{% url 'upload_and_restore_backup' %}" enctype="multipart/form-data" class="space-y-4">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Upload Backup File</label>
+                        <input type="file" name="backup_file" accept=".json,.sql,.zip" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" name="confirm_restore" class="mr-2 h-4 w-4 text-yellow-600 bg-gray-700 border-gray-600 rounded focus:ring-yellow-500">
+                        <label class="text-sm font-medium text-gray-300">I confirm this will overwrite current data</label>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-yellow-500 to-orange-600 text-white py-2 px-4 rounded-lg hover:from-yellow-600 hover:to-orange-700 transition">
+                        <i class="fas fa-upload mr-2"></i>Restore Backup
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Existing Backups -->
+        <div class="mt-8">
+            <h3 class="text-xl font-semibold text-white mb-4">
+                <i class="fas fa-history mr-2 text-cyan-400"></i>Existing Backups
+            </h3>
+            <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg rounded-lg overflow-hidden">
+                <table class="w-full">
+                    <thead class="bg-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Backup Name</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Type</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Size</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Date</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-300">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700">
+                        {% for backup in backups %}
+                        <tr class="hover:bg-gray-700 transition">
+                            <td class="px-4 py-3 text-sm text-gray-300">{{ backup.name }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-300">{{ backup.type|title }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-300">{{ backup.size|filesizeformat }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-300">{{ backup.created|date:"Y-m-d H:i:s" }}</td>
+                            <td class="px-4 py-3 text-sm">
+                                <div class="flex gap-2">
+                                    <a href="{% url 'download_backup' backup.id %}" class="text-green-400 hover:text-green-300">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                    <button onclick="restoreBackup('{{ backup.id }}')" class="text-yellow-400 hover:text-yellow-300">
+                                        <i class="fas fa-undo"></i>
+                                    </button>
+                                    <button onclick="deleteBackup('{{ backup.id }}')" class="text-red-400 hover:text-red-300">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="px-4 py-8 text-center text-gray-400">
+                                <i class="fas fa-info-circle text-2xl mb-2"></i>
+                                <p>No backups found.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Backup Statistics -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg p-4 rounded-lg text-center">
+                <i class="fas fa-database text-2xl text-green-400 mb-2"></i>
+                <h4 class="text-lg font-semibold text-white">{{ backup_count }}</h4>
+                <p class="text-gray-400">Total Backups</p>
+            </div>
+            <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg p-4 rounded-lg text-center">
+                <i class="fas fa-hdd text-2xl text-blue-400 mb-2"></i>
+                <h4 class="text-lg font-semibold text-white">{{ total_size|filesizeformat }}</h4>
+                <p class="text-gray-400">Total Storage</p>
+            </div>
+            <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg p-4 rounded-lg text-center">
+                <i class="fas fa-clock text-2xl text-yellow-400 mb-2"></i>
+                <h4 class="text-lg font-semibold text-white">{{ last_backup|date:"Y-m-d" }}</h4>
+                <p class="text-gray-400">Last Backup</p>
+            </div>
+        </div>
+        
+        <div class="mt-8 text-center">
+            <a href="{% url 'superadmin_dashboard' %}" class="inline-block bg-gradient-to-r from-gray-500 to-gray-600 text-white px-6 py-3 rounded-lg hover:from-gray-600 hover:to-gray-700 transition">
+                <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+function restoreBackup(backupId) {
+    if (confirm('Are you sure you want to restore this backup? This will overwrite current data.')) {
+        fetch(`/system/backup/restore/${backupId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
+            },
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            }
+        });
+    }
+}
+
+function deleteBackup(backupId) {
+    if (confirm('Are you sure you want to delete this backup?')) {
+        fetch(`/system/backup/delete/${backupId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
+            },
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            }
+        });
+    }
+}
+</script>
+{% endblock %}

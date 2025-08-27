@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-md p-8 bg-[#212A3E] rounded-2xl shadow-2xl transform transition-all hover:scale-105 animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-8 text-center text-[#94B4C1] tracking-tight">Create User</h2>
+
+        {% if messages %}
+            <div class="mb-6">
+                <div class="p-3 bg-red-500/20 text-red-300 rounded-lg text-sm text-center animate-fadeIn">
+                    {% for message in messages %}
+                        {{ message }}
+                        {% if not forloop.last %}<br>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <form method="POST" class="space-y-6" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-[#F1F6F9]">{{ field.label }}</label>
+                    <div class="relative mt-1">
+                        {% if field.field.widget.input_type == 'file' %}
+                            {{ field }}
+                        {% else %}
+                            {{ field }}
+                            <script>
+                                document.getElementById('{{ field.id_for_label }}').classList.add(
+                                    'block', 'w-full', 'px-4', 'py-3', 'bg-[#394867]', 'text-[#F1F6F9]',
+                                    'border', 'border-[#547792]', 'rounded-lg', 'focus:outline-none',
+                                    'focus:ring-2', 'focus:ring-[#94B4C1]', 'focus:border-transparent',
+                                    'transition-all', 'duration-300'
+                                );
+                            </script>
+                        {% endif %}
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="flex space-x-4">
+                <button type="submit"
+                        class="flex-1 bg-[#94B4C1] text-[#212A3E] font-semibold py-3 rounded-lg hover:bg-[#ECEFCA] focus:outline-none focus:ring-2 focus:ring-[#94B4C1] focus:ring-offset-2 focus:ring-offset-[#213448] transition-all duration-300 transform hover:scale-105">
+                    Create User
+                </button>
+                <a href="{% url 'superadmin_dashboard' %}"
+                   class="flex-1 bg-[#394867] text-[#F1F6F9] font-semibold py-3 rounded-lg hover:bg-[#547792] text-center transition-all duration-300 transform hover:scale-105">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById('id_role').addEventListener('change', function() {
+    const enrollmentField = document.getElementById('id_enrollment_no').parentElement.parentElement;
+    const departmentField = document.getElementById('id_department').parentElement.parentElement;
+    
+    if (this.value === 'student') {
+        enrollmentField.style.display = 'block';
+        departmentField.style.display = 'none';
+        document.getElementById('id_enrollment_no').required = true;
+        document.getElementById('id_department').required = false;
+    } else if (this.value === 'admin') {
+        enrollmentField.style.display = 'none';
+        departmentField.style.display = 'block';
+        document.getElementById('id_enrollment_no').required = false;
+        document.getElementById('id_department').required = true;
+    } else {
+        enrollmentField.style.display = 'none';
+        departmentField.style.display = 'none';
+        document.getElementById('id_enrollment_no').required = false;
+        document.getElementById('id_department').required = false;
+    }
+});
+</script>
+{% endblock %}

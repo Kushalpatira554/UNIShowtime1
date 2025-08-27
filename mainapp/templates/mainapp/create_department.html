@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-md p-8 bg-[#212A3E] rounded-2xl shadow-2xl transform transition-all hover:scale-105 animate-fadeIn">
+        <h2 class="text-3xl font-bold mb-8 text-center text-[#94B4C1] tracking-tight">Create Department</h2>
+
+        {% if messages %}
+            <div class="mb-6">
+                <div class="p-3 bg-red-500/20 text-red-300 rounded-lg text-sm text-center animate-fadeIn">
+                    {% for message in messages %}
+                        {{ message }}
+                        {% if not forloop.last %}<br>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            <div>
+                <label for="name" class="block text-sm font-medium text-[#F1F6F9]">Department Name</label>
+                <div class="relative mt-1">
+                    <input type="text" name="name" id="name" required
+                           class="block w-full px-4 py-3 bg-[#394867] text-[#F1F6F9] border border-[#547792] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#94B4C1] focus:border-transparent transition-all duration-300"
+                           placeholder="Enter department name" />
+                </div>
+            </div>
+
+            <div>
+                <label for="code" class="block text-sm font-medium text-[#F1F6F9]">Department Code</label>
+                <div class="relative mt-1">
+                    <input type="text" name="code" id="code" required
+                           class="block w-full px-4 py-3 bg-[#394867] text-[#F1F6F9] border border-[#547792] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#94B4C1] focus:border-transparent transition-all duration-300"
+                           placeholder="Enter department code" />
+                </div>
+            </div>
+
+            <div class="flex space-x-4">
+                <button type="submit"
+                        class="flex-1 bg-[#94B4C1] text-[#212A3E] font-semibold py-3 rounded-lg hover:bg-[#ECEFCA] focus:outline-none focus:ring-2 focus:ring-[#94B4C1] focus:ring-offset-2 focus:ring-offset-[#213448] transition-all duration-300 transform hover:scale-105">
+                    Create Department
+                </button>
+                <a href="{% url 'superadmin_dashboard' %}"
+                   class="flex-1 bg-[#394867] text-[#F1F6F9] font-semibold py-3 rounded-lg hover:bg-[#547792] text-center transition-all duration-300 transform hover:scale-105">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

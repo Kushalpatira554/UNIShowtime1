@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="min-h-screen bg-[#212A3E] py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto bg-[#394867] rounded-xl shadow-2xl overflow-hidden">
+        <!-- User Header -->
+        <div class="p-6 border-b border-[#212A3E]">
+            <div class="flex items-center space-x-4">
+                {% if user.profile_image %}
+                <img src="{{ user.profile_image.url }}" alt="{{ user.username }}" class="w-24 h-24 rounded-full object-cover">
+                {% else %}
+                <div class="w-24 h-24 rounded-full bg-[#212A3E] flex items-center justify-center">
+                    <i class="fas fa-user text-4xl text-[#9BA4B5]"></i>
+                </div>
+                {% endif %}
+                <div>
+                    <h1 class="text-3xl font-bold text-[#F1F6F9]">{{ user.username }}</h1>
+                    <p class="text-[#9BA4B5]">{{ user.role|title }}</p>
+                    {% if user.department %}
+                    <p class="text-[#94B4C1]">{{ user.department.name }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- User Details -->
+        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Left Column: Basic Info -->
+            <div class="space-y-4">
+                <h3 class="text-xl font-semibold text-[#94B4C1] mb-4">Basic Information</h3>
+                <div class="bg-[#212A3E] p-4 rounded-lg space-y-2">
+                    <p class="text-[#F1F6F9]">
+                        <span class="font-semibold text-[#9BA4B5]">Email:</span>
+                        {{ user.email }}
+                    </p>
+                    {% if user.enrollment_no %}
+                    <p class="text-[#F1F6F9]">
+                        <span class="font-semibold text-[#9BA4B5]">Enrollment No:</span>
+                        {{ user.enrollment_no }}
+                    </p>
+                    {% endif %}
+                    <p class="text-[#F1F6F9]">
+                        <span class="font-semibold text-[#9BA4B5]">Joined:</span>
+                        {{ user.date_joined|date:"F j, Y" }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Column: Tickets -->
+            <div class="space-y-4">
+                <h3 class="text-xl font-semibold text-[#94B4C1] mb-4">Booked Tickets</h3>
+                <div class="space-y-4">
+                    {% for ticket in user.ticket_set.all %}
+                    <div class="bg-[#212A3E] p-4 rounded-lg hover:bg-[#547792] transition">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="text-[#F1F6F9] font-semibold">{{ ticket.event.title }}</h4>
+                                <p class="text-sm text-[#9BA4B5]">{{ ticket.event.date|date:"F j, Y - g:i A" }}</p>
+                                <p class="text-sm text-[#9BA4B5]">{{ ticket.event.location }}</p>
+                            </div>
+                            <a href="{% url 'qr_view' ticket.id %}" class="text-[#94B4C1] hover:text-[#ECEFCA]">
+                                <i class="fas fa-qrcode"></i>
+                            </a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center text-[#9BA4B5] p-4 bg-[#212A3E] rounded-lg">
+                        <i class="fas fa-ticket-alt text-3xl mb-2"></i>
+                        <p>No tickets booked yet</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mx-auto px-4 py-8 mt-20">
+    <div class="max-w-md mx-auto">
+        <!-- QR Code Card with Glass Morphism -->
+        <div class="relative rounded-xl overflow-hidden shadow-2xl" 
+             style="background: linear-gradient(135deg, rgba(33, 52, 72, 0.85), rgba(57, 72, 103, 0.85)); backdrop-filter: blur(10px); border: 1px solid rgba(148, 180, 193, 0.3);">
+            
+            <!-- Decorative elements -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-transparent to-#94B4C1 opacity-10 rounded-bl-full"></div>
+            <div class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-transparent to-#ECEFCA opacity-10 rounded-tr-full"></div>
+            
+            <div class="relative p-8 text-center z-10">
+                <h2 class="text-2xl font-bold mb-6 text-#F1F6F9">Your Ticket QR Code</h2>
+                
+                <!-- QR Code with Glow Effect -->
+                <div class="relative mx-auto w-64 h-64 mb-6">
+                    <div class="absolute inset-0 bg-#94B4C1 opacity-20 blur-xl rounded-full"></div>
+                    <div class="relative bg-#213448 p-3 rounded-xl shadow-lg">
+                        <img src="{{ ticket.qr_code.url }}" alt="QR Code" class="w-full h-full rounded-lg" />
+                    </div>
+                </div>
+                
+                <!-- Event Info -->
+                <div class="mb-6 p-4 rounded-lg bg-#213448/50 backdrop-filter backdrop-blur-sm border border-#547792/30">
+                    <h3 class="text-#ECEFCA font-semibold mb-2">{{ ticket.event.title }}</h3>
+                    <div class="flex justify-between text-sm text-#94B4C1">
+                        <span>{{ ticket.event.date }}</span>
+                        <span>{{ ticket.event.time }}</span>
+                    </div>
+                </div>
+                
+                <!-- Download Button -->
+                <a href="{% url 'qr_download' ticket.id %}" 
+                   class="inline-block px-6 py-3 rounded-lg bg-#547792 text-#F1F6F9 hover:bg-#94B4C1 hover:text-#213448 transition-all duration-300 shadow-lg transform hover:scale-105">
+                    <div class="flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        <span>Download QR Code</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

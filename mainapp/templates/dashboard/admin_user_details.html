@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="min-h-screen bg-gray-900 py-8">
+    <div class="max-w-4xl mx-auto px-4">
+        <!-- User Profile Card -->
+        <div class="bg-gray-800 rounded-2xl shadow-2xl p-8 mb-8 transform transition-all hover:scale-105 animate-fadeIn">
+            <div class="flex items-start justify-between mb-6">
+                <div class="flex items-center space-x-4">
+                    {% if user.profile_image %}
+                        <img src="{{ user.profile_image.url }}" alt="{{ user.username }}" class="w-20 h-20 rounded-full object-cover border-4 border-yellow-400">
+                    {% else %}
+                        <div class="w-20 h-20 rounded-full bg-gray-700 flex items-center justify-center text-2xl font-bold text-yellow-400">
+                            {{ user.username|make_list|first|upper }}
+                        </div>
+                    {% endif %}
+                    <div>
+                        <h1 class="text-3xl font-bold text-white">{{ user.username }}</h1>
+                        <p class="text-gray-400">{{ user.get_role_display }}</p>
+                    </div>
+                </div>
+                {% if request.user.is_super_admin %}
+                    <a href="{% url 'edit_user' user.id %}" class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition-colors">
+                        <i class="fas fa-edit mr-2"></i>Edit
+                    </a>
+                {% endif %}
+            </div>
+
+            <!-- User Details -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="space-y-4">
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <h3 class="text-sm font-medium text-gray-400">Email</h3>
+                        <p class="text-white">{{ user.email }}</p>
+                    </div>
+                    {% if user.enrollment_no %}
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h3 class="text-sm font-medium text-gray-400">Enrollment Number</h3>
+                            <p class="text-white">{{ user.enrollment_no }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="space-y-4">
+                    {% if user.department %}
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h3 class="text-sm font-medium text-gray-400">Department</h3>
+                            <p class="text-white">{{ user.department.name }}</p>
+                        </div>
+                    {% endif %}
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <h3 class="text-sm font-medium text-gray-400">Date Joined</h3>
+                        <p class="text-white">{{ user.date_joined|date:"F d, Y" }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Section -->
+            {% if user.role == 'student' %}
+                <!-- Booked Events -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-yellow-400 mb-4">Booked Events</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {% for ticket in user.ticket_set.all %}
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h3 class="text-lg font-semibold text-white">{{ ticket.event.title }}</h3>
+                                <p class="text-gray-400">{{ ticket.event.date|date:"F d, Y" }}</p>
+                                <p class="text-sm text-gray-400">Booked on: {{ ticket.booked_at|date:"F d, Y" }}</p>
+                            </div>
+                        {% empty %}
+                            <p class="text-gray-400">No events booked yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% elif user.role == 'admin' %}
+                <!-- Created Events -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-yellow-400 mb-4">Created Events</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {% for event in user.created_events.all %}
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h3 class="text-lg font-semibold text-white">{{ event.title }}</h3>
+                                <p class="text-gray-400">{{ event.date|date:"F d, Y" }}</p>
+                                <p class="text-sm text-gray-400">Tickets: {{ event.tickets_left }}/{{ event.available_tickets }}</p>
+                            </div>
+                        {% empty %}
+                            <p class="text-gray-400">No events created yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
