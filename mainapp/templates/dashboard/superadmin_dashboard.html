@@ -1,168 +1,395 @@
-{% extends "base.html" %}
-{% block content %}
-    <div class="w-full max-w-7xl p-8 rounded-2xl shadow-2xl relative overflow-hidden" style="background: rgba(31, 64, 55, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(118, 199, 183, 0.3);">
-        <!-- Decorative elements -->
-        <div class="absolute -top-20 -right-20 w-40 h-40 bg-purple-500 bg-opacity-20 rounded-full filter blur-3xl"></div>
-        <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-blue-500 bg-opacity-20 rounded-full filter blur-3xl"></div>
-        
-        <h2 class="text-3xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 tracking-tight relative z-10"><i class="fas fa-crown mr-2 text-yellow-400"></i>Super Admin Dashboard</h2>
+{% extends 'base.html' %}
 
-        <!-- Stats Section -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" data-aos="fade-up">
-            <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg p-6 rounded-lg shadow-lg border border-gray-700 border-opacity-50 hover:border-cyan-500 hover:border-opacity-50 transition-all duration-300 transform hover:-translate-y-1 group">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-xl font-semibold text-white">Total Users</h3>
-                    <i class="fas fa-users text-2xl text-cyan-400 opacity-70 group-hover:opacity-100 transition-opacity"></i>
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <h1 class="text-4xl font-bold mb-8 text-center text-primary">Super Admin Dashboard</h1>
+    
+    <!-- Stats Section with Enhanced Styling -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-dark text-white p-6 rounded-lg shadow-md border border-gray-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group">
+            <!-- Decorative accent -->
+            <div class="absolute top-0 left-0 w-2 h-full bg-primary transition-all duration-300 group-hover:w-3"></div>
+            <div class="absolute -top-10 -right-10 w-24 h-24 bg-primary opacity-10 rounded-full group-hover:scale-150 transition-all duration-500"></div>
+            
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-300 group-hover:text-white transition-colors duration-300">Total Users</h3>
+                    <p class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-light">{{ total_users }}</p>
                 </div>
-                <p class="text-4xl font-bold mt-2 text-white">{{ total_users }}</p>
-                <div class="w-full h-1 bg-gray-700 mt-4 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full" style="width: 85%"></div>
-                </div>
-            </div>
-            <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg p-6 rounded-lg shadow-lg border border-gray-700 border-opacity-50 hover:border-purple-500 hover:border-opacity-50 transition-all duration-300 transform hover:-translate-y-1 group">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-xl font-semibold text-white">Total Events</h3>
-                    <i class="fas fa-calendar-alt text-2xl text-purple-400 opacity-70 group-hover:opacity-100 transition-opacity"></i>
-                </div>
-                <p class="text-4xl font-bold mt-2 text-white">{{ total_events }}</p>
-                <div class="w-full h-1 bg-gray-700 mt-4 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-purple-400 to-pink-500 rounded-full" style="width: 75%"></div>
-                </div>
-            </div>
-            <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg p-6 rounded-lg shadow-lg border border-gray-700 border-opacity-50 hover:border-pink-500 hover:border-opacity-50 transition-all duration-300 transform hover:-translate-y-1 group">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-xl font-semibold text-white">Total Bookings</h3>
-                    <i class="fas fa-ticket-alt text-2xl text-pink-400 opacity-70 group-hover:opacity-100 transition-opacity"></i>
-                </div>
-                <p class="text-4xl font-bold mt-2 text-white">{{ total_bookings }}</p>
-                <div class="w-full h-1 bg-gray-700 mt-4 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-pink-400 to-red-500 rounded-full" style="width: 60%"></div>
+                <div class="w-14 h-14 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center text-white shadow-lg transform group-hover:rotate-12 transition-all duration-300">
+                    <i class="fas fa-users text-xl"></i>
                 </div>
             </div>
-            <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg p-6 rounded-lg shadow-lg border border-gray-700 border-opacity-50 hover:border-blue-500 hover:border-opacity-50 transition-all duration-300 transform hover:-translate-y-1 group">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-xl font-semibold text-white">Departments</h3>
-                    <i class="fas fa-building text-2xl text-blue-400 opacity-70 group-hover:opacity-100 transition-opacity"></i>
-                </div>
-                <p class="text-4xl font-bold mt-2 text-white">{{ total_departments }}</p>
-                <div class="w-full h-1 bg-gray-700 mt-4 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full" style="width: 40%"></div>
-                </div>
+            <div class="mt-4 text-gray-400 flex items-center">
+                <span class="{% if user_growth >= 0 %}text-success{% else %}text-error{% endif %} font-medium flex items-center">
+                    <i class="fas {% if user_growth >= 0 %}fa-arrow-up{% else %}fa-arrow-down{% endif %} mr-1 transform group-hover:translate-y-[-2px] transition-transform duration-300"></i>
+                    <span class="transform group-hover:scale-105 transition-transform duration-300">{% if user_growth < 0 %}{{ user_growth|cut:'-' }}{% else %}{{ user_growth }}{% endif %}%</span>
+                </span>
+                <span class="ml-1">from last month</span>
             </div>
         </div>
-
-        <!-- Manage Departments Section -->
-        <div class="mt-10" data-aos="fade-up" data-aos-delay="100">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500"><i class="fas fa-building mr-2 text-blue-400"></i>Manage Departments</h3>
-                <div class="flex gap-4 items-center">
-                    <input type="text" id="departmentSearch" placeholder="Search departments..." class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-sm text-white px-4 py-2 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+        
+        <div class="bg-dark text-white p-6 rounded-lg shadow-md border border-gray-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group">
+            <!-- Decorative accent -->
+            <div class="absolute top-0 left-0 w-2 h-full bg-accent transition-all duration-300 group-hover:w-3"></div>
+            <div class="absolute -top-10 -right-10 w-24 h-24 bg-accent opacity-10 rounded-full group-hover:scale-150 transition-all duration-500"></div>
+            
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-300 group-hover:text-white transition-colors duration-300">Active Events</h3>
+                    <p class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-light">{{ active_events }}</p>
+                </div>
+                <div class="w-14 h-14 bg-gradient-to-br from-accent to-accent-dark rounded-lg flex items-center justify-center text-white shadow-lg transform group-hover:rotate-12 transition-all duration-300">
+                    <i class="fas fa-calendar-check text-xl"></i>
                 </div>
             </div>
+            <div class="mt-4 text-gray-400 flex items-center">
+                <span class="{% if event_growth >= 0 %}text-success{% else %}text-error{% endif %} font-medium flex items-center">
+                    <i class="fas {% if event_growth >= 0 %}fa-arrow-up{% else %}fa-arrow-down{% endif %} mr-1 transform group-hover:translate-y-[-2px] transition-transform duration-300"></i>
+                    <span class="transform group-hover:scale-105 transition-transform duration-300">{% if event_growth < 0 %}{{ event_growth|cut:'-' }}{% else %}{{ event_growth }}{% endif %}%</span>
+                </span>
+                <span class="ml-1">from last month</span>
+            </div>
+        </div>
+        
+        <div class="bg-dark text-white p-6 rounded-lg shadow-md border border-gray-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group">
+            <!-- Decorative accent -->
+            <div class="absolute top-0 left-0 w-2 h-full bg-warning transition-all duration-300 group-hover:w-3"></div>
+            <div class="absolute -top-10 -right-10 w-24 h-24 bg-warning opacity-10 rounded-full group-hover:scale-150 transition-all duration-500"></div>
+            
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-300 group-hover:text-white transition-colors duration-300">System Health</h3>
+                    <p class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-warning to-warning-light">100%</p>
+                </div>
+                <div class="w-14 h-14 bg-gradient-to-br from-warning to-warning-dark rounded-lg flex items-center justify-center text-white shadow-lg transform group-hover:rotate-12 transition-all duration-300">
+                    <i class="fas fa-server text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4 text-gray-400 flex items-center">
+                <span class="text-success font-medium flex items-center">
+                    <i class="fas fa-circle mr-1 text-xs animate-pulse"></i>
+                    <span class="transform group-hover:scale-105 transition-transform duration-300">All Systems Operational</span>
+                </span>
+            </div>
+        </div>
+        
+        <div class="bg-dark text-white p-6 rounded-lg shadow-md border border-gray-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group">
+            <!-- Decorative accent -->
+            <div class="absolute top-0 left-0 w-2 h-full bg-secondary transition-all duration-300 group-hover:w-3"></div>
+            <div class="absolute -top-10 -right-10 w-24 h-24 bg-secondary opacity-10 rounded-full group-hover:scale-150 transition-all duration-500"></div>
+            
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-300 group-hover:text-white transition-colors duration-300">Departments</h3>
+                    <p class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-secondary to-secondary-light">{{ total_departments }}</p>
+                </div>
+                <div class="w-14 h-14 bg-gradient-to-br from-secondary to-secondary-dark rounded-lg flex items-center justify-center text-white shadow-lg transform group-hover:rotate-12 transition-all duration-300">
+                    <i class="fas fa-building text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4 text-gray-400 flex items-center">
+                <span class="text-gray-300 font-medium flex items-center">
+                    <i class="fas fa-check-circle mr-1 transform group-hover:scale-110 transition-transform duration-300"></i>
+                    <span class="transform group-hover:scale-105 transition-transform duration-300">All Active</span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+        <!-- Manage Departments Section with Enhanced Styling -->
+        <div class="mt-12">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 pb-4 border-b border-gray-700">
+                <h3 class="text-2xl font-bold mb-4 md:mb-0 relative">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-light">Manage Departments</span>
+                    <div class="absolute -bottom-2 left-0 w-16 h-1 bg-primary rounded-full"></div>
+                </h3>
+                <div class="relative w-full md:w-auto group">
+                    <input type="text" id="departmentSearch" placeholder="Search departments..." 
+                           class="w-full md:w-64 bg-dark text-white px-4 py-3 rounded-lg border border-gray-700 
+                                  focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent 
+                                  transition-all duration-300 shadow-sm hover:shadow-md
+                                  group-hover:border-primary-light">
+                    <div class="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/5 to-primary-light/5 opacity-0 
+                              group-hover:opacity-100 pointer-events-none transition-opacity duration-300"></div>
+                    <i class="fas fa-search absolute right-3 top-3.5 text-gray-400 transition-all duration-300 group-hover:text-primary-light"></i>
+                </div>
+            </div>
+            
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% for department in departments %}
-                    <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg text-white p-6 rounded-lg shadow-lg border border-gray-700 border-opacity-50 hover:border-blue-500 hover:border-opacity-50 transition-all duration-300 transform hover:-translate-y-1 department-card" data-has-active-events="{{ department.has_active_events }}" style="display: block">
-                        <div class="flex justify-between items-start mb-4">
-                            <h4 class="text-xl font-semibold">{{ department.name }}</h4>
-                            <span class="px-2 py-1 bg-gradient-to-r from-blue-400 to-indigo-500 text-xs text-white rounded-full">{{ department.code }}</span>
+                    <div class="bg-dark text-white p-6 rounded-lg shadow-md border border-gray-700 department-card 
+                                hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 
+                                relative overflow-hidden group" 
+                         data-has-active-events="{{ department.has_active_events }}" style="display: block">
+                        
+                        <!-- Decorative elements -->
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-primary opacity-5 rounded-bl-full"></div>
+                        <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-primary opacity-5 rounded-full"></div>
+                        
+                        <div class="flex items-center justify-between mb-4 relative z-10">
+                            <h4 class="text-xl font-semibold group-hover:text-primary-light transition-colors duration-300">{{ department.name }}</h4>
+                            <span class="px-3 py-1 text-xs rounded-md bg-gradient-to-r from-primary to-primary-dark text-white font-medium shadow-sm transform group-hover:scale-105 transition-all duration-300">{{ department.code }}</span>
                         </div>
-                        <p class="text-gray-400 mt-2">Department Code: {{ department.code }}</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-blue-400"><i class="fas fa-users mr-1"></i>{{ department.users_count }} users</span>
-                            <a href="{% url 'department_details' department.id %}" class="text-blue-400 hover:text-indigo-300 flex items-center transition-colors duration-300">
-                                <span>View Details</span>
-                                <i class="fas fa-arrow-right ml-1"></i>
+                        <p class="text-gray-400 mb-4 group-hover:text-gray-300 transition-colors duration-300">Department Code: {{ department.code }}</p>
+                        <div class="flex justify-between items-center relative z-10">
+                            <span class="text-gray-400 text-sm group-hover:text-gray-300 transition-colors duration-300">
+                                <i class="fas fa-user mr-1 group-hover:scale-110 transition-transform duration-300"></i>
+                                <span class="group-hover:font-medium transition-all duration-300">{{ department.users_count }} Users</span>
+                            </span>
+                            <a href="{% url 'department_details' department.id %}" 
+                               class="btn-base btn-outline btn-outline-primary btn-sm btn-icon btn-icon-animated">
+                                <span>Details</span>
+                                <i class="fas fa-arrow-right text-sm"></i>
                             </a>
                         </div>
                     </div>
+                {% empty %}
+                    <div class="col-span-full flex flex-col items-center justify-center py-10 text-gray-400 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-primary-dark/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg"></div>
+                        <i class="fas fa-building text-5xl mb-4 opacity-30 group-hover:text-primary-light group-hover:opacity-50 transition-all duration-300 transform group-hover:scale-110"></i>
+                        <p class="text-xl group-hover:text-primary-light transition-colors duration-300">No departments found</p>
+                        <p class="mt-2 group-hover:text-gray-300 transition-colors duration-300">Create your first department to get started</p>
+                        <a href="{% url 'create_department' %}" class="btn-base btn-primary btn-icon btn-ripple mt-6">
+                            <i class="fas fa-plus"></i>
+                            <span>Add Department</span>
+                        </a>
+                    </div>
                 {% endfor %}
             </div>
+            
             <div class="mt-6 text-center">
-                <a href="{% url 'create_department' %}" class="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-lg hover:from-blue-600 hover:to-indigo-700 transition transform hover:-translate-y-1 hover:shadow-lg">
-                    <i class="fas fa-plus-circle mr-2"></i>Create New Department
+                <a href="{% url 'create_department' %}" class="btn-base btn-primary btn-icon btn-ripple">
+                    <i class="fas fa-plus"></i>
+                    <span>Create New Department</span>
+                </a>
+            </div>
+        </div>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <a href="{% url 'create_department' %}" class="inline-block bg-primary text-white px-6 py-3 rounded-md hover:bg-primary-dark shadow-sm">
+                    <i class="fas fa-plus mr-2"></i>Create New Department
                 </a>
             </div>
         </div>
 
-        <!-- Manage Users Section -->
-        <div class="mt-10" data-aos="fade-up" data-aos-delay="200">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500"><i class="fas fa-users-cog mr-2 text-purple-400"></i>Manage Users</h3>
-                <div class="flex gap-4 items-center">
-                    <input type="text" id="userSearch" placeholder="Search users..." class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-sm text-white px-4 py-2 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                    <div class="flex items-center gap-4">
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="radio" name="userRole" value="all" class="sr-only peer" onchange="filterUsers('all')" checked>
-                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-purple-400 to-pink-500"></div>
-                            <span class="ml-2 text-sm font-medium text-white">All</span>
-                        </label>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="radio" name="userRole" value="student" class="sr-only peer" onchange="filterUsers('student')">
-                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-purple-400 to-pink-500"></div>
-                            <span class="ml-2 text-sm font-medium text-white">Students</span>
-                        </label>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="radio" name="userRole" value="admin" class="sr-only peer" onchange="filterUsers('admin')">
-                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-purple-400 to-pink-500"></div>
-                            <span class="ml-2 text-sm font-medium text-white">Teachers</span>
-                        </label>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="radio" name="userRole" value="superadmin" class="sr-only peer" onchange="filterUsers('superadmin')">
-                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-purple-400 to-pink-500"></div>
-                            <span class="ml-2 text-sm font-medium text-white">Admins</span>
-                        </label>
-                    </div>
+        <!-- Manage Users Section with Enhanced Styling -->
+        <div class="mt-12">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 pb-4 border-b border-gray-700">
+                <h3 class="text-2xl font-bold mb-4 md:mb-0 relative">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-light">Manage Users</span>
+                    <div class="absolute -bottom-2 left-0 w-16 h-1 bg-accent rounded-full"></div>
+                </h3>
+                <div class="relative w-full md:w-auto group">
+                    <input type="text" id="userSearch" placeholder="Search users..." 
+                           class="w-full md:w-64 bg-dark text-white px-4 py-3 rounded-lg border border-gray-700 
+                                  focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent 
+                                  transition-all duration-300 shadow-sm hover:shadow-md
+                                  group-hover:border-accent-light">
+                    <div class="absolute inset-0 rounded-lg bg-gradient-to-r from-accent/5 to-accent-light/5 opacity-0 
+                              group-hover:opacity-100 pointer-events-none transition-opacity duration-300"></div>
+                    <i class="fas fa-search absolute right-3 top-3.5 text-gray-400 transition-all duration-300 group-hover:text-accent-light"></i>
                 </div>
+            </div>
+            
+            <div class="flex flex-wrap gap-4 mb-6 bg-dark bg-opacity-50 p-4 rounded-lg shadow-inner">
+                <label class="relative inline-flex items-center cursor-pointer group">
+                    <input type="radio" name="userRole" value="all" class="sr-only peer" checked onchange="filterUsers('all')">
+                    <div class="w-12 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-accent 
+                                rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white 
+                                after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white 
+                                after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 
+                                peer-checked:bg-gradient-to-r peer-checked:from-accent peer-checked:to-accent-light 
+                                after:transition-all after:duration-300 transition-all duration-300 shadow-sm"></div>
+                    <span class="ml-2 text-sm font-medium text-white group-hover:text-accent transition-colors duration-300">All Users</span>
+                </label>
+                <label class="relative inline-flex items-center cursor-pointer group">
+                    <input type="radio" name="userRole" value="student" class="sr-only peer" onchange="filterUsers('student')">
+                    <div class="w-12 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary 
+                                rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white 
+                                after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white 
+                                after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 
+                                peer-checked:bg-gradient-to-r peer-checked:from-primary peer-checked:to-primary-light 
+                                after:transition-all after:duration-300 transition-all duration-300 shadow-sm"></div>
+                    <span class="ml-2 text-sm font-medium text-white group-hover:text-primary transition-colors duration-300">Students</span>
+                </label>
+                <label class="relative inline-flex items-center cursor-pointer group">
+                    <input type="radio" name="userRole" value="admin" class="sr-only peer" onchange="filterUsers('admin')">
+                    <div class="w-12 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary 
+                                rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white 
+                                after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white 
+                                after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 
+                                peer-checked:bg-gradient-to-r peer-checked:from-primary peer-checked:to-primary-light 
+                                after:transition-all after:duration-300 transition-all duration-300 shadow-sm"></div>
+                    <span class="ml-2 text-sm font-medium text-white group-hover:text-primary transition-colors duration-300">Teachers</span>
+                </label>
+                <label class="relative inline-flex items-center cursor-pointer group">
+                    <input type="radio" name="userRole" value="superadmin" class="sr-only peer" onchange="filterUsers('superadmin')">
+                    <div class="w-12 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary 
+                                rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white 
+                                after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white 
+                                after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 
+                                peer-checked:bg-gradient-to-r peer-checked:from-primary peer-checked:to-primary-light 
+                                after:transition-all after:duration-300 transition-all duration-300 shadow-sm"></div>
+                    <span class="ml-2 text-sm font-medium text-white group-hover:text-primary transition-colors duration-300">Admins</span>
+                </label>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% for user in users %}
-                    <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg text-white p-6 rounded-lg shadow-lg border border-gray-700 border-opacity-50 hover:border-purple-500 hover:border-opacity-50 transition-all duration-300 transform hover:-translate-y-1 user-card" data-role="{{ user.role }}" style="display: block;">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <div class="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg">
-                                {{ user.username|first|upper }}
-                            </div>
+                    <div class="bg-dark text-white p-6 rounded-lg shadow-md border border-gray-700 user-card 
+                                hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 
+                                relative overflow-hidden group" 
+                         data-role="{{ user.role }}" style="display: block;">
+                        
+                        <!-- Decorative elements based on user role -->
+                        {% if user.role == 'student' %}
+                            <div class="absolute top-0 left-0 w-2 h-full bg-primary transition-all duration-300 group-hover:w-3"></div>
+                            <div class="absolute -top-10 -right-10 w-24 h-24 bg-primary opacity-10 rounded-full group-hover:scale-150 transition-all duration-500"></div>
+                        {% elif user.role == 'admin' %}
+                            <div class="absolute top-0 left-0 w-2 h-full bg-secondary transition-all duration-300 group-hover:w-3"></div>
+                            <div class="absolute -top-10 -right-10 w-24 h-24 bg-secondary opacity-10 rounded-full group-hover:scale-150 transition-all duration-500"></div>
+                        {% elif user.role == 'superadmin' %}
+                            <div class="absolute top-0 left-0 w-2 h-full bg-accent transition-all duration-300 group-hover:w-3"></div>
+                            <div class="absolute -top-10 -right-10 w-24 h-24 bg-accent opacity-10 rounded-full group-hover:scale-150 transition-all duration-500"></div>
+                        {% else %}
+                            <div class="absolute top-0 left-0 w-2 h-full bg-warning transition-all duration-300 group-hover:w-3"></div>
+                            <div class="absolute -top-10 -right-10 w-24 h-24 bg-warning opacity-10 rounded-full group-hover:scale-150 transition-all duration-500"></div>
+                        {% endif %}
+                        
+                        <div class="flex items-center space-x-4 mb-4 relative z-10">
+                            {% if user.role == 'student' %}
+                                <div class="w-14 h-14 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center text-white font-bold shadow-lg transform group-hover:rotate-12 transition-all duration-300">
+                                    {{ user.username|first|upper }}
+                                </div>
+                            {% elif user.role == 'admin' %}
+                                <div class="w-14 h-14 bg-gradient-to-br from-secondary to-secondary-dark rounded-lg flex items-center justify-center text-white font-bold shadow-lg transform group-hover:rotate-12 transition-all duration-300">
+                                    {{ user.username|first|upper }}
+                                </div>
+                            {% elif user.role == 'superadmin' %}
+                                <div class="w-14 h-14 bg-gradient-to-br from-accent to-accent-dark rounded-lg flex items-center justify-center text-white font-bold shadow-lg transform group-hover:rotate-12 transition-all duration-300">
+                                    {{ user.username|first|upper }}
+                                </div>
+                            {% else %}
+                                <div class="w-14 h-14 bg-gradient-to-br from-warning to-warning-dark rounded-lg flex items-center justify-center text-white font-bold shadow-lg transform group-hover:rotate-12 transition-all duration-300">
+                                    {{ user.username|first|upper }}
+                                </div>
+                            {% endif %}
                             <div>
-                                <h4 class="text-xl font-semibold">{{ user.username }}</h4>
-                                <p class="text-purple-400 text-sm">{{ user.role }}</p>
+                                <h4 class="text-xl font-semibold group-hover:text-white transition-colors duration-300">{{ user.username }}</h4>
+                                {% if user.role == 'student' %}
+                                    <p class="text-primary-light text-sm font-medium">{{ user.role|title }}</p>
+                                {% elif user.role == 'admin' %}
+                                    <p class="text-secondary-light text-sm font-medium">{{ user.role|title }}</p>
+                                {% elif user.role == 'superadmin' %}
+                                    <p class="text-accent-light text-sm font-medium">{{ user.role|title }}</p>
+                                {% else %}
+                                    <p class="text-warning-light text-sm font-medium">{{ user.role|title }}</p>
+                                {% endif %}
                             </div>
                         </div>
-                        <div class="flex justify-between items-center mt-4">
-                            <span class="text-gray-400 text-sm"><i class="fas fa-envelope mr-1"></i>{{ user.email }}</span>
-                            <a href="{% url 'user_details' user.id %}" class="text-purple-400 hover:text-pink-300 flex items-center transition-colors duration-300">
-                                <span>View Details</span>
-                                <i class="fas fa-arrow-right ml-1"></i>
+                        <div class="flex justify-between items-center mt-4 relative z-10">
+                            <span class="text-gray-400 text-sm group-hover:text-gray-300 transition-colors duration-300">
+                                <i class="fas fa-envelope mr-1 group-hover:scale-110 transition-transform duration-300"></i>
+                                <span class="group-hover:font-medium transition-all duration-300">{{ user.email }}</span>
+                            </span>
+                            <a href="{% url 'user_details' user.id %}" 
+                               class="btn-base btn-outline btn-outline-primary btn-sm btn-icon btn-icon-animated">
+                                <span>Details</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-span-full flex flex-col items-center justify-center py-10 text-gray-400 group relative overflow-hidden rounded-lg p-8">
+                        <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-primary-light/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg"></div>
+                        <i class="fas fa-users text-5xl mb-4 opacity-30 group-hover:text-primary-light group-hover:opacity-80 transition-all duration-300 transform group-hover:scale-110 relative z-10"></i>
+                        <p class="text-xl group-hover:text-white transition-colors duration-300 relative z-10">No users found</p>
+                        <p class="mt-2 group-hover:text-gray-300 transition-colors duration-300 relative z-10">Create your first user to get started</p>
+                        <div class="mt-6">
+                            <a href="{% url 'create_user' %}" class="btn-base btn-primary btn-icon btn-ripple">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Add User</span>
                             </a>
                         </div>
                     </div>
                 {% endfor %}
             </div>
-            <div class="mt-6 text-center">
-                <a href="{% url 'create_user' %}" class="inline-block bg-gradient-to-r from-purple-500 to-pink-600 text-white px-6 py-3 rounded-lg hover:from-purple-600 hover:to-pink-700 transition transform hover:-translate-y-1 hover:shadow-lg">
-                    <i class="fas fa-user-plus mr-2"></i>Create New User
+            <div class="mt-8 text-center">
+                <a href="{% url 'create_user' %}" 
+                   class="btn-base btn-primary btn-icon btn-ripple">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Create New User</span>
                 </a>
             </div>
         </div>
 
-        <!-- System Settings Section -->
-        <div class="mt-10 text-center p-6 bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg border border-gray-700 border-opacity-50 hover:border-cyan-500 hover:border-opacity-50 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
-            <h3 class="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-2"><i class="fas fa-cogs mr-2 text-cyan-400"></i>System Settings</h3>
-            <p class="text-gray-400 mb-4">Configure system-wide settings and perform maintenance tasks.</p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="{% url 'system_settings' %}" class="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-cyan-600 hover:to-blue-700 transition transform hover:-translate-y-1 hover:shadow-lg">
-                    <i class="fas fa-sliders-h mr-1"></i>Settings
-                </a>
-                <a href="{% url 'system_logs' %}" class="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-cyan-600 hover:to-blue-700 transition transform hover:-translate-y-1 hover:shadow-lg">
-                    <i class="fas fa-list-alt mr-1"></i>View Logs
-                </a>
-                <a href="{% url 'system_backup' %}" class="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-cyan-600 hover:to-blue-700 transition transform hover:-translate-y-1 hover:shadow-lg">
-                    <i class="fas fa-database mr-1"></i>Backup
-                </a>
+        <!-- System Settings Section with Enhanced Styling -->
+        <div class="mt-12 p-8 bg-dark rounded-lg shadow-lg border border-gray-700 relative overflow-hidden">
+            <!-- Decorative elements -->
+            <div class="absolute -top-20 -right-20 w-40 h-40 bg-accent opacity-5 rounded-full"></div>
+            <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-accent opacity-5 rounded-full"></div>
+            
+            <div class="relative z-10 text-center">
+                <h3 class="text-2xl font-bold mb-3 inline-block relative">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-light">System Settings</span>
+                    <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-accent rounded-full"></div>
+                </h3>
+                <p class="text-gray-400 mb-6 max-w-2xl mx-auto">Configure system-wide settings and perform maintenance tasks to ensure optimal performance.</p>
+                
+                <div class="flex flex-wrap justify-center gap-5">
+                    <a href="{% url 'system_settings' %}" 
+                       class="btn-base btn-accent btn-icon btn-ripple">
+                        <div class="w-8 h-8 flex items-center justify-center bg-white bg-opacity-20 rounded-md 
+                                    group-hover:bg-opacity-30 transition-all duration-300">
+                            <i class="fas fa-sliders-h text-sm group-hover:scale-110 transition-transform duration-300"></i>
+                        </div>
+                        <span class="font-medium">Settings</span>
+                    </a>
+                    
+                    <a href="{% url 'system_logs' %}" 
+                       class="btn-base btn-accent btn-icon btn-ripple">
+                        <div class="w-8 h-8 flex items-center justify-center bg-white bg-opacity-20 rounded-md 
+                                    group-hover:bg-opacity-30 transition-all duration-300">
+                            <i class="fas fa-list-alt text-sm group-hover:scale-110 transition-transform duration-300"></i>
+                        </div>
+                        <span>View Logs</span>
+                    </a>
+                    
+                    <a href="{% url 'system_backup' %}" 
+                       class="btn-base btn-accent btn-icon btn-ripple">
+                        <div class="w-8 h-8 flex items-center justify-center bg-white bg-opacity-20 rounded-md 
+                                    group-hover:bg-opacity-30 transition-all duration-300">
+                            <i class="fas fa-database text-sm group-hover:scale-110 transition-transform duration-300"></i>
+                        </div>
+                        <span>Backup</span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
 <script>
-    // Department search and filter functionality
+    // Add page load animations
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate stats cards on load
+        const statsCards = document.querySelectorAll('.bg-dark.text-white.p-6.rounded-lg');
+        statsCards.forEach((card, index) => {
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100 * index);
+        });
+        
+        // Animate section headers
+        const sectionHeaders = document.querySelectorAll('h3');
+        sectionHeaders.forEach((header) => {
+            header.classList.add('animate-fade-in');
+        });
+    });
+
+    // Department search and filter functionality with animations
     const departmentSearch = document.getElementById('departmentSearch');
     const departmentGrid = document.querySelector('.department-card').parentNode;
     const departments = departmentGrid.getElementsByClassName('department-card');
@@ -176,14 +403,23 @@
         Array.from(departments).forEach(dept => {
             const title = dept.querySelector('h4').textContent.toLowerCase();
             const matchesSearch = title.includes(searchTerm);
-            dept.style.display = matchesSearch ? 'block' : 'none';
-            // Add smooth transition
-            dept.style.transition = 'all 0.3s ease-in-out';
-            dept.style.opacity = dept.style.display === 'block' ? '1' : '0';
+            if (matchesSearch) {
+                dept.style.display = 'block';
+                setTimeout(() => {
+                    dept.style.opacity = '1';
+                    dept.style.transform = 'scale(1)';
+                }, 50);
+            } else {
+                dept.style.opacity = '0.5';
+                dept.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    dept.style.display = 'none';
+                }, 300);
+            }
         });
     }
 
-    // User search and filter functionality
+    // User search and filter functionality with smooth transitions
     const userSearch = document.getElementById('userSearch');
     const userGrid = document.querySelector('.user-card').parentNode;
     const users = userGrid.getElementsByClassName('user-card');
@@ -205,10 +441,20 @@
             const userRole = user.dataset.role;
             const matchesSearch = username.includes(searchTerm);
             const matchesRole = role === 'all' || userRole === role;
-            user.style.display = (matchesSearch && matchesRole) ? 'block' : 'none';
-            // Add smooth transition
-            user.style.transition = 'all 0.3s ease-in-out';
-            user.style.opacity = user.style.display === 'block' ? '1' : '0';
+            
+            if (matchesSearch && matchesRole) {
+                user.style.display = 'block';
+                setTimeout(() => {
+                    user.style.opacity = '1';
+                    user.style.transform = 'translateX(0)';
+                }, 50);
+            } else {
+                user.style.opacity = '0.5';
+                user.style.transform = 'translateX(-10px)';
+                setTimeout(() => {
+                    user.style.display = 'none';
+                }, 300);
+            }
         });
     }
 
@@ -216,8 +462,56 @@
     window.addEventListener('load', function() {
         filterDepartments();
         filterUsers('all');
+        
+        // Add subtle hover animations to all cards
+        const allCards = document.querySelectorAll('.department-card, .user-card');
+        allCards.forEach((card) => {
+            card.style.transition = 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)';
+        });
+        
+        // Add pulse animation to important elements
+        setInterval(() => {
+            const pulseElements = document.querySelectorAll('.animate-pulse');
+            pulseElements.forEach(el => {
+                el.classList.add('pulse-active');
+                setTimeout(() => {
+                    el.classList.remove('pulse-active');
+                }, 1000);
+            });
+        }, 3000);
     });
 </script>
+
+<!-- Add additional CSS for animations -->
+<style>
+    /* Base transitions for all cards */
+    .bg-dark.text-white.p-6.rounded-lg {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        opacity: 0.95;
+        transform: translateY(10px);
+    }
+    
+    /* Fade-in animation */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+    
+    /* Custom pulse animation */
+    @keyframes customPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+    
+    .pulse-active {
+        animation: customPulse 1s ease-in-out;
+    }
+</style>
 
 
 {% endblock %}

@@ -29,10 +29,10 @@
         <div class="bg-gray-800 bg-opacity-70 backdrop-filter backdrop-blur-lg rounded-lg p-4 max-h-96 overflow-y-auto">
             <div class="space-y-2">
                 {% for log in logs %}
-                <div class="log-entry p-3 rounded border-l-4 {% if log.level == 'ERROR' %}border-red-500 bg-red-900 bg-opacity-20{% elif log.level == 'WARNING' %}border-yellow-500 bg-yellow-900 bg-opacity-20{% elif log.level == 'INFO' %}border-blue-500 bg-blue-900 bg-opacity-20{% else %}border-gray-500 bg-gray-700 bg-opacity-50{% endif %}">
+                <div class="log-entry p-3 rounded border-l-4 {% if log.level == 'ERROR' %}border-red-500 bg-red-900 bg-opacity-20{% elif log.level == 'WARNING' %}border-blue-500 bg-blue-900 bg-opacity-20{% elif log.level == 'INFO' %}border-blue-500 bg-blue-900 bg-opacity-20{% else %}border-gray-500 bg-gray-700 bg-opacity-50{% endif %}">
                     <div class="flex justify-between items-start">
                         <div>
-                            <span class="font-bold {% if log.level == 'ERROR' %}text-red-400{% elif log.level == 'WARNING' %}text-yellow-400{% elif log.level == 'INFO' %}text-blue-400{% else %}text-gray-400{% endif %}">
+                            <span class="font-bold {% if log.level == 'ERROR' %}text-red-400{% elif log.level == 'WARNING' %}text-blue-400{% elif log.level == 'INFO' %}text-blue-400{% else %}text-gray-400{% endif %}">
                                 [{{ log.level }}]
                             </span>
                             <span class="text-gray-300 ml-2">{{ log.message }}</span>

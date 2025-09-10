@@ -7,9 +7,9 @@
             <div class="flex items-start justify-between mb-6">
                 <div class="flex items-center space-x-4">
                     {% if user.profile_image %}
-                        <img src="{{ user.profile_image.url }}" alt="{{ user.username }}" class="w-20 h-20 rounded-full object-cover border-4 border-yellow-400">
+                        <img src="{{ user.profile_image.url }}" alt="{{ user.username }}" class="w-20 h-20 rounded-full object-cover border-4 border-blue-400">
                     {% else %}
-                        <div class="w-20 h-20 rounded-full bg-gray-700 flex items-center justify-center text-2xl font-bold text-yellow-400">
+                        <div class="w-20 h-20 rounded-full bg-gray-700 flex items-center justify-center text-2xl font-bold text-blue-400">
                             {{ user.username|make_list|first|upper }}
                         </div>
                     {% endif %}
@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 {% if request.user.is_super_admin %}
-                    <a href="{% url 'edit_user' user.id %}" class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition-colors">
+                    <a href="{% url 'edit_user' user.id %}" class="bg-blue-400 text-black px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors">
                         <i class="fas fa-edit mr-2"></i>Edit
                     </a>
                 {% endif %}

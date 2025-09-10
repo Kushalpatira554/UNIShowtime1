@@ -2,11 +2,14 @@
 {% load static %}
 {% block title %}Student Dashboard{% endblock %}
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900 py-12 px-4">
+<div class="min-h-screen  py-12 px-4">
     <!-- Profile Section with Glass Morphism -->
     <div class="container mx-auto max-w-6xl">
-        <div class="mb-10 rounded-2xl overflow-hidden shadow-2xl relative" 
+        <div class="mb-10 rounded-2xl overflow-hidden shadow-2xl relative bg-white/5 backdrop-blur-lg border border-white/10"
              data-aos="fade-up" data-aos-duration="1000">
+            <!-- Neon top border -->
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 animate-gradient-x"></div>
+
             <div class="absolute inset-0 bg-black opacity-20 z-0"></div>
             <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/30 to-purple-600/30 backdrop-filter backdrop-blur-lg z-0 border border-white/10"></div>
             
@@ -34,24 +37,20 @@
                         
                         <!-- Profile Action Buttons -->
                         <div class="flex flex-col sm:flex-row gap-3 mb-6 justify-center md:justify-start">
-                            <a href="{% url 'edit_profile' %}" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all duration-300 transform hover:scale-105">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                </svg>
-                                Edit Profile
+                            <a href="{% url 'edit_profile' %}" class="btn-base btn-primary btn-icon btn-ripple inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white shadow-md transition">
+                                <i class="fas fa-edit"></i>
+                                <span>Edit Profile</span>
                             </a>
-                                <a href="{% url 'suggest_event' %}" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all duration-300 transform hover:scale-105">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                </svg>
-                                Suggest Event
+                            <a href="{% url 'suggest_event' %}" class="btn-base btn-secondary btn-icon btn-ripple inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white transition hover:scale-[1.02]">
+                                <i class="fas fa-calendar-plus"></i>
+                                <span>Suggest Event</span>
                             </a>
                         </div>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                             <div class="p-5 rounded-xl bg-white/5 border border-white/10 backdrop-filter backdrop-blur-sm transform transition-all duration-300 hover:bg-white/10 hover:scale-105 hover:shadow-xl">
                                 <h3 class="text-purple-300 font-medium mb-2 flex items-center">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path>
                                     </svg>
                                     Enrollment Number
@@ -59,13 +58,12 @@
                                 {% if user.enrollment_no %}
                                 <p class="text-white text-xl font-semibold">{{ user.enrollment_no }}</p>
                                 {% else %}
-                                <p class="text-yellow-400 text-xl font-semibold">Not Set</p>
+                                <p class="text-blue-400 text-xl font-semibold">Not Set</p>
                                 {% endif %}
-                                </p>
                             </div>
                             <div class="p-5 rounded-xl bg-white/5 border border-white/10 backdrop-filter backdrop-blur-sm transform transition-all duration-300 hover:bg-white/10 hover:scale-105 hover:shadow-xl">
                                 <h3 class="text-purple-300 font-medium mb-2 flex items-center">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                                     </svg>
                                     Events Attended
@@ -87,7 +85,7 @@
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for event in upcoming_events %}
-            <div class="event-card bg-gray-800/70 backdrop-filter backdrop-blur-sm rounded-xl overflow-hidden shadow-xl border border-gray-600/30 transform transition-all duration-300 hover:shadow-2xl" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'100' }}">
+            <div class="event-card bg-white/5 backdrop-blur-lg rounded-xl overflow-hidden shadow-xl border border-white/10 transform transition-all duration-300 hover:shadow-2xl hover:scale-105" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'100' }}">
                 {% if event.image %}
                 <img src="{{ event.image.url }}" alt="{{ event.title }}" class="w-full h-48 object-cover">
                 {% else %}
@@ -99,7 +97,7 @@
                     <h3 class="text-xl font-bold text-white mb-2">{{ event.title }}</h3>
                     <p class="text-gray-300 mb-4 text-sm leading-relaxed">{{ event.description|truncatechars:100 }}</p>
                     <div class="flex items-center text-indigo-300 mb-4">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                         </svg>
                         <span>{{ event.date|date:"F j, Y" }} at {{ event.time|time:"g:i A" }}</span>
@@ -107,19 +105,25 @@
                     <div class="flex justify-between items-center">
                         <span class="text-sm text-gray-400">{{ event.location }}</span>
                         {% if event.id %}
-                        <a href="{% url 'event_details' event.id %}" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm transition-all duration-300 transform hover:scale-105">
-                            View Details
+                        <a href="{% url 'event_details' event.id %}" class="btn-base btn-primary btn-sm btn-icon btn-ripple inline-flex items-center gap-2 px-3 py-2 rounded-md bg-gradient-to-r from-blue-400 to-blue-500 text-white shadow-sm transition">
+                            <i class="fas fa-eye"></i>
+                            <span>View Details</span>
                         </a>
                         {% endif %}
                     </div>
                 </div>
              </div>
              {% empty %}
-            <div class="col-span-full p-8 rounded-lg bg-gray-800/70 border border-gray-600/30 text-center backdrop-filter backdrop-blur-sm">
-                <svg class="w-16 h-16 text-gray-500 mx-auto mb-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <p class="text-gray-300 text-lg">No upcoming events to display.</p>
+            <div class="col-span-full p-8 rounded-lg bg-white/5 border border-white/10 text-center backdrop-filter backdrop-blur-sm group relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-primary-light/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg"></div>
+                <i class="fas fa-calendar-alt text-5xl text-gray-400 mx-auto mb-4 opacity-70 group-hover:text-primary-light group-hover:opacity-80 transition-all duration-300 transform group-hover:scale-110 relative z-10"></i>
+                <p class="text-gray-300 text-lg group-hover:text-white transition-colors duration-300 relative z-10">No upcoming events to display.</p>
+                <div class="mt-6">
+                    <a href="{% url 'events' %}" class="btn-base btn-primary btn-icon btn-ripple inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-400 to-blue-500 text-white shadow-md transition">
+                        <i class="fas fa-search"></i>
+                        <span>Browse Events</span>
+                    </a>
+                </div>
             </div>
             {% endfor %}
         </div>
@@ -134,7 +138,7 @@
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for event in past_events %}
-            <div class="past-event-card bg-gray-800/70 backdrop-filter backdrop-blur-sm rounded-xl overflow-hidden shadow-xl border border-gray-600/30 transform transition-all duration-300 hover:shadow-2xl" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'100' }}">
+            <div class="past-event-card bg-white/5 backdrop-blur-lg rounded-xl overflow-hidden shadow-xl border border-white/10 transform transition-all duration-300 hover:shadow-2xl hover:scale-105" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:'100' }}">
                 {% if event.image %}
                 <img src="{{ event.image.url }}" alt="{{ event.title }}" class="w-full h-48 object-cover">
                 {% else %}
@@ -146,143 +150,147 @@
                     <h3 class="text-xl font-bold text-white mb-2">{{ event.title }}</h3>
                     <p class="text-gray-300 mb-4 text-sm leading-relaxed">{{ event.description|truncatechars:100 }}</p>
                     <div class="flex items-center text-indigo-300 mb-4">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                         </svg>
                         <span>{{ event.date|date:"F j, Y" }} at {{ event.time|time:"g:i A" }}</span>
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-sm text-gray-400">{{ event.location }}</span>
-                        <a href="{% url 'event_details' event.id %}" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm transition-all duration-300 transform hover:scale-105">
-                            View Details
+                        <a href="{% url 'event_details' event.id %}" class="btn-base btn-primary btn-sm btn-icon btn-ripple inline-flex items-center gap-2 px-3 py-2 rounded-md bg-gradient-to-r from-blue-400 to-blue-500 text-white shadow-sm transition">
+                            <i class="fas fa-eye"></i>
+                            <span>View Details</span>
                         </a>
                     </div>
                 </div>
             </div>
             {% empty %}
-            <div class="col-span-full p-8 rounded-lg bg-gray-800/70 border border-gray-600/30 text-center backdrop-filter backdrop-blur-sm">
-                <svg class="w-16 h-16 text-gray-500 mx-auto mb-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <p class="text-gray-300 text-lg">No past events to display.</p>
+            <div class="col-span-full p-8 rounded-lg bg-white/5 border border-white/10 text-center backdrop-filter backdrop-blur-sm group relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-primary-light/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg"></div>
+                <i class="fas fa-calendar-times text-5xl text-gray-400 mx-auto mb-4 opacity-70 group-hover:text-primary-light group-hover:opacity-80 transition-all duration-300 transform group-hover:scale-110 relative z-10"></i>
+                <p class="text-gray-300 text-lg group-hover:text-white transition-colors duration-300 relative z-10">No past events to display.</p>
             </div>
             {% endfor %}
         </div>
     </div>
 
-<!-- Event Memories Section -->
-<div>
-    <h2 class="text-2xl font-bold text-white mb-6 relative inline-block">
-        Event Memories
-        <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-300 to-transparent"></span>
-    </h2>
+    <!-- Event Memories Section -->
+    <div>
+        <h2 class="text-2xl font-bold text-white mb-6 relative inline-block">
+            Event Memories
+            <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-300 to-transparent"></span>
+        </h2>
 
-    <div class="grid grid-cols-4 gap-4">
-        {% for ticket in attended_events %}
-        <a href="{% url 'event_memories' ticket.event.id %}" class="group">
-            <div class="relative overflow-hidden rounded-lg h-56 shadow-lg transition-all duration-300 transform group-hover:scale-105">
-                {% if ticket.event.image %}
-                <img src="{{ ticket.event.image.url }}" alt="{{ ticket.event.title }}"
-                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                {% else %}
-                <div class="w-full h-full bg-gray-700 flex items-center justify-center">
-                    <span class="text-gray-400">No Image</span>
+        <div class="grid grid-cols-4 gap-4">
+            {% for ticket in attended_events %}
+            <a href="{% url 'event_memories' ticket.event.id %}" class="group">
+                <div class="relative overflow-hidden rounded-lg h-56 shadow-lg transition-all duration-300 transform group-hover:scale-105">
+                    {% if ticket.event.image %}
+                    <img src="{{ ticket.event.image.url }}" alt="{{ ticket.event.title }}"
+                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    {% else %}
+                    <div class="w-full h-full bg-gray-700 flex items-center justify-center">
+                        <span class="text-gray-400">No Image</span>
+                    </div>
+                    {% endif %}
+
+                    <!-- Gradient overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-300"></div>
+
+                    <!-- Event info -->
+                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
+                        <h3 class="text-lg font-bold text-white group-hover:text-indigo-300 transition-colors duration-300">
+                            {{ ticket.event.title }}
+                        </h3>
+                        <p class="text-sm text-gray-300">{{ ticket.event.date }}</p>
+                    </div>
+
+                    <!-- Icon badge -->
+                    <div class="absolute top-0 right-0 p-3">
+                        <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-indigo-400/30 backdrop-filter backdrop-blur-sm border border-indigo-400/50">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </span>
+                    </div>
                 </div>
-                {% endif %}
-
-                <!-- Gradient overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-300"></div>
-
-                <!-- Event info -->
-                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
-                    <h3 class="text-lg font-bold text-white group-hover:text-indigo-300 transition-colors duration-300">
-                        {{ ticket.event.title }}
-                    </h3>
-                    <p class="text-sm text-gray-300">{{ ticket.event.date }}</p>
-                </div>
-
-                <!-- Icon badge -->
-                <div class="absolute top-0 right-0 p-3">
-                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-indigo-400/30 backdrop-filter backdrop-blur-sm border border-indigo-400/50">
-                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                    </span>
+            </a>
+            {% empty %}
+            <div class="col-span-4 flex items-center justify-center p-8 rounded-lg bg-white/5 border border-white/10 text-center backdrop-filter backdrop-blur-sm min-h-[200px]">
+                <div>
+                    <svg class="w-16 h-16 mx-auto text-gray-400 mb-4 opacity-70" fill="none" stroke="currentColor"
+                         viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <h3 class="text-xl font-medium text-white mb-2">No Event Memories Yet</h3>
+                    <p class="text-gray-300">Attend events to create memories that will appear here.</p>
                 </div>
             </div>
-        </a>
-        {% empty %}
-        <div class="col-span-4 flex items-center justify-center p-8 rounded-lg bg-gray-800/70 border border-gray-600/30 text-center backdrop-filter backdrop-blur-sm min-h-[200px]">
-            <div>
-                <svg class="w-16 h-16 mx-auto text-gray-400 mb-4 opacity-70" fill="none" stroke="currentColor"
-                     viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <h3 class="text-xl font-medium text-white mb-2">No Event Memories Yet</h3>
-                <p class="text-gray-300">Attend events to create memories that will appear here.</p>
-            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
-</div>
  </div>
  
  <!-- Suggest Profile Modal -->
 <div id="suggest-profile-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+    <div class="bg-white/6 backdrop-blur-lg rounded-lg p-6 max-w-md w-full mx-4 border border-white/10 shadow-2xl">
         <h3 class="text-xl font-bold text-white mb-4">Suggest Profile Updates</h3>
         <form id="suggest-profile-form">
             <div class="mb-4">
                 <label class="block text-gray-300 text-sm font-medium mb-2">Suggestions</label>
-                <textarea class="w-full px-3 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="4" placeholder="Suggest profile improvements..."></textarea>
+                <textarea class="w-full px-3 py-2 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 border border-white/10" rows="4" placeholder="Suggest profile improvements..."></textarea>
             </div>
             <div class="flex justify-end space-x-3">
                 <button type="button" onclick="document.getElementById('suggest-profile-modal').classList.add('hidden')" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
                     Cancel
                 </button>
-                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                <button type="submit" class="px-4 py-2 bg-gradient-to-r from-blue-400 to-blue-500 text-white rounded-lg hover:from-blue-500 hover:to-blue-600 transition-colors">
                     Send Suggestion
                 </button>
             </div>
         </form>
     </div>
 </div>
-{% block extra_js %}
-<script>        
-        // Add animation to event cards
-        const eventCards = document.querySelectorAll('.event-card, .past-event-card');
-        eventCards.forEach((card, index) => {
-            // Add hover animation using anime.js
-            card.addEventListener('mouseenter', function() {
-                anime({
-                    targets: this,
-                    translateY: -10,
-                    boxShadow: '0 20px 25px -5px rgba(79, 70, 229, 0.2)',
-                    duration: 400,
-                    easing: 'easeOutCubic'
-                });
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                anime({
-                    targets: this,
-                    translateY: 0,
-                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-                    duration: 400,
-                    easing: 'easeOutCubic'
-                });
-            });
-        });
 
+{% block extra_js %}
+<script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize AOS
-        AOS.init({
-            duration: 1000,
-            once: true,
-        });
-        
+        // Initialize AOS (if included in base)
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 1000,
+                once: true,
+            });
+        }
+
+        // Add animation to event cards using anime.js if available
+        const eventCards = document.querySelectorAll('.event-card, .past-event-card');
+        if (eventCards && typeof anime !== 'undefined') {
+            eventCards.forEach((card) => {
+                card.addEventListener('mouseenter', function() {
+                    anime({
+                        targets: this,
+                        translateY: -10,
+                        boxShadow: '0 20px 25px -5px rgba(79, 70, 229, 0.12)',
+                        duration: 400,
+                        easing: 'easeOutCubic'
+                    });
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    anime({
+                        targets: this,
+                        translateY: 0,
+                        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                        duration: 400,
+                        easing: 'easeOutCubic'
+                    });
+                });
+            });
+        }
+
         // Suggest Profile Modal Handling
         const suggestForm = document.getElementById('suggest-profile-form');
         if (suggestForm) {
@@ -290,17 +298,30 @@
                 e.preventDefault();
                 const suggestion = this.querySelector('textarea').value;
                 if (suggestion.trim()) {
-                    // Here you would typically send the suggestion to your backend
+                    // Here you would typically send the suggestion to your backend (AJAX/fetch)
+                    // For demo, show alert and close modal
                     alert('Profile suggestion sent successfully!');
                     document.getElementById('suggest-profile-modal').classList.add('hidden');
                     this.reset();
+                } else {
+                    // small feedback
+                    alert('Please enter a suggestion before sending.');
                 }
             });
         }
-
-
     });
 </script>
-{% endblock %}
 
+<style>
+/* small helper animations matching login theme */
+@keyframes gradient-x {
+  0%,100% { background-position: left center; }
+  50% { background-position: right center; }
+}
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 6s ease infinite;
+}
+</style>
+{% endblock %}
 {% endblock %}

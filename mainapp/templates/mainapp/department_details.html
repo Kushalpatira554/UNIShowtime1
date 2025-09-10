@@ -50,7 +50,7 @@
                          style="background: linear-gradient(135deg, rgba(33, 52, 72, 0.9), rgba(57, 72, 103, 0.7)); backdrop-filter: blur(8px); border: 1px solid rgba(148, 180, 193, 0.2);">
                         <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-transparent to-#94B4C1 opacity-10 rounded-bl-full"></div>
                         <h3 class="text-sm font-medium text-#94B4C1 mb-2">Active Events</h3>
-                        <p class="text-3xl font-bold text-#F1F6F9">{{ department.events.filter.date__gte:now.count }}</p>
+                        <p class="text-3xl font-bold text-#F1F6F9">{{ department.events.all|length }}</p>
                     </div>
                 </div>
 

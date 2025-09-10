@@ -350,12 +350,14 @@ def department_details(request, department_id):
     if request.user.role != 'superadmin':
         return HttpResponseForbidden("You don't have permission to view this page.")
     
+    from django.utils import timezone
     department = get_object_or_404(Department, id=department_id)
     users = CustomUser.objects.filter(department=department)
     
     return render(request, 'mainapp/department_details.html', {
         'department': department,
-        'users': users
+        'users': users,
+        'now': timezone.now()
     })
 
 @login_required

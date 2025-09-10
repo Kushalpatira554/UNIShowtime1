@@ -15,13 +15,13 @@
         <p class="text-indigo-200/80 mt-1">Manage events, users, approvals, and memories — clean, fast, and consistent with the student theme.</p>
       </div>
       <div class="flex flex-wrap items-center gap-3">
-        <a href="{% url 'create_event' %}" title="Create Event" class="inline-flex items-center gap-2 rounded-md bg-primary hover:bg-primary-dark text-white px-3 py-2">
+        <a href="{% url 'create_event' %}" title="Create Event" class="btn-base btn-primary btn-icon btn-ripple">
           <i class="fa-solid fa-plus"></i><span class="font-medium">Create Event</span>
         </a>
-        <a href="{% url 'create_user' %}" title="Create User" class="inline-flex items-center gap-2 rounded-md bg-secondary hover:bg-secondary-dark text-white px-3 py-2">
+        <a href="{% url 'create_user' %}" title="Create User" class="btn-base btn-secondary btn-icon btn-ripple">
           <i class="fa-solid fa-user-plus"></i><span class="font-medium">Create User</span>
         </a>
-        <a href="{% url 'system_settings' %}" title="System Settings" class="inline-flex items-center gap-2 rounded-md bg-dark-light hover:bg-secondary text-white px-3 py-2 border border-secondary-light">
+        <a href="{% url 'system_settings' %}" title="System Settings" class="btn-base btn-outline btn-outline-secondary btn-icon btn-ripple">
           <i class="fa-solid fa-gear"></i><span class="font-medium">Settings</span>
         </a>
       </div>
@@ -98,14 +98,14 @@
                 <a href="{% url 'add_event_memory' event.id %}" title="Add Memory" class="icon-btn"><i class="fa-regular fa-image"></i></a>
               </div>
             </div>
-            <div class="mt-3 flex items-center gap-3 text-xs text-indigo-200/70">
+            <div class="mt-3 flex items-center gap-3 text-xs text-secondary-light">
               <span class="inline-flex items-center gap-1"><i class="fa-solid fa-ticket"></i> {{ event.tickets_sold|default:'0' }} sold</span>
               <span>•</span>
               <span class="inline-flex items-center gap-1"><i class="fa-regular fa-images"></i> {{ event.eventmemory_set.count|default:'0' }} memories</span>
             </div>
           </div>
           {% empty %}
-          <div class="col-span-full flex items-center justify-center p-8 rounded-lg bg-gray-800/70 border border-gray-600/30 text-center backdrop-filter backdrop-blur-sm min-h-[200px]">
+          <div class="col-span-full flex items-center justify-center p-6 rounded-md bg-dark border border-secondary-light text-center min-h-[180px]">
               <div>
                   <svg class="w-16 h-16 mx-auto text-gray-400 mb-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -119,32 +119,32 @@
       </div>
 
       <!-- Users Panel -->
-      <div class="rounded-2xl bg-gray-900/40 border border-white/10 backdrop-blur-xl shadow-2xl overflow-hidden" data-aos="fade-up">
-        <div class="flex items-center justify-between p-5 border-b border-white/10">
+      <div class="rounded-md bg-dark-light border border-secondary-light overflow-hidden">
+        <div class="flex items-center justify-between p-4 border-b border-secondary-light">
           <div>
             <h2 class="text-xl font-bold text-white">Users</h2>
-            <p class="text-sm text-indigo-200/80">Manage platform users</p>
+            <p class="text-sm text-secondary-light">Manage platform users</p>
           </div>
           <div class="flex items-center gap-2">
             <div class="relative hidden sm:block">
-              <input id="userSearch" type="text" placeholder="Search users…" class="w-64 rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-sm text-indigo-100 placeholder-indigo-300/60 focus:outline-none focus:ring-2 focus:ring-indigo-400/40">
-              <i class="fa-solid fa-magnifying-glass absolute right-3 top-1/2 -translate-y-1/2 text-indigo-300/70"></i>
+              <input id="userSearch" type="text" placeholder="Search users…" class="w-64 rounded-md bg-dark border border-secondary-light px-3 py-2 text-sm text-light placeholder-secondary-light focus:outline-none focus:border-primary">
+              <i class="fa-solid fa-magnifying-glass absolute right-3 top-1/2 -translate-y-1/2 text-secondary-light"></i>
             </div>
-            <a href="{% url 'create_user' %}" title="Create User" class="inline-flex items-center gap-2 rounded-xl bg-purple-600/90 hover:bg-purple-500 text-white px-3.5 py-2.5 transition">
+            <a href="{% url 'create_user' %}" title="Create User" class="inline-flex items-center gap-2 rounded-md bg-secondary hover:bg-secondary-dark text-white px-3 py-2">
               <i class="fa-solid fa-user-plus"></i><span class="font-medium hidden sm:inline">Add</span>
             </a>
           </div>
         </div>
 
-        <div class="p-5 space-y-4 max-h-[32rem] overflow-y-auto custom-scrollbar" id="usersList">
+        <div class="p-4 space-y-3 max-h-[32rem] overflow-y-auto custom-scrollbar" id="usersList">
           {% for user in users %}
-          <div class="group p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-purple-400/40 transition shadow-md" data-user-card data-title="{{ user.username|lower }} {{ user.email|lower }} {{ user.role|default:''|lower }}">
+          <div class="group p-3 rounded-md bg-dark border border-secondary-light hover:border-primary" data-user-card data-title="{{ user.username|lower }} {{ user.email|lower }} {{ user.role|default:''|lower }}">
             <div class="flex items-start justify-between gap-4">
               <div class="min-w-0">
                 <h3 class="text-white font-semibold truncate">{{ user.username }}</h3>
-                <p class="text-sm text-indigo-200/80 truncate">{{ user.email }}</p>
+                <p class="text-sm text-secondary-light truncate">{{ user.email }}</p>
                 {% if user.role %}
-                <p class="mt-1 text-xs text-indigo-200/60 uppercase tracking-wide">Role: {{ user.role }}</p>
+                <p class="mt-1 text-xs text-secondary-light uppercase">Role: {{ user.role }}</p>
                 {% endif %}
               </div>
               <div class="flex items-center gap-2 shrink-0">
@@ -154,7 +154,7 @@
             </div>
           </div>
           {% empty %}
-          <div class="col-span-full flex items-center justify-center p-8 rounded-lg bg-gray-800/70 border border-gray-600/30 text-center backdrop-filter backdrop-blur-sm min-h-[200px]">
+          <div class="col-span-full flex items-center justify-center p-6 rounded-md bg-dark border border-secondary-light text-center min-h-[180px]">
               <div>
                   <svg class="w-16 h-16 mx-auto text-gray-400 mb-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -169,43 +169,43 @@
     </section>
 
     <!-- Approvals Panel -->
-    <section class="rounded-2xl bg-gray-900/40 border border-white/10 backdrop-blur-xl shadow-2xl overflow-hidden" data-aos="fade-up">
-      <div class="flex items-center justify-between p-5 border-b border-white/10">
+    <section class="rounded-md bg-dark-light border border-secondary-light overflow-hidden">
+      <div class="flex items-center justify-between p-4 border-b border-secondary-light">
         <div>
           <h2 class="text-xl font-bold text-white">Pending Approvals</h2>
-          <p class="text-sm text-indigo-200/80">Approve or reject suggested events</p>
+          <p class="text-sm text-secondary-light">Approve or reject suggested events</p>
         </div>
       </div>
 
-      <div class="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {% for approval in approvals %}
-        <div class="p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition shadow-md">
+        <div class="p-3 rounded-md bg-dark border border-secondary-light hover:border-primary">
           <div class="flex items-start justify-between gap-4">
             <div class="min-w-0">
               <h3 class="text-white font-semibold truncate">{{ approval.title }}</h3>
-              <p class="text-sm text-indigo-200/80">by {{ approval.user.username }}</p>
+              <p class="text-sm text-secondary-light">by {{ approval.user.username }}</p>
               {% if approval.description %}
-              <p class="mt-2 text-indigo-100/80 text-sm line-clamp-3">{{ approval.description }}</p>
+              <p class="mt-2 text-light text-sm line-clamp-3">{{ approval.description }}</p>
               {% endif %}
             </div>
           </div>
           <div class="mt-4 flex items-center gap-2">
             <form method="post" action="{% url 'approve_event' approval.id %}">
               {% csrf_token %}
-              <button class="inline-flex items-center gap-2 rounded-lg bg-emerald-600/90 hover:bg-emerald-500 text-white px-3 py-2 text-sm transition" title="Approve">
+              <button class="inline-flex items-center gap-2 rounded-md bg-success hover:bg-success-dark text-white px-3 py-2 text-sm" title="Approve">
                 <i class="fa-regular fa-circle-check"></i> Approve
               </button>
             </form>
             <form method="post" action="{% url 'reject_event' approval.id %}">
               {% csrf_token %}
-              <button class="inline-flex items-center gap-2 rounded-lg bg-rose-600/90 hover:bg-rose-500 text-white px-3 py-2 text-sm transition" title="Reject">
+              <button class="inline-flex items-center gap-2 rounded-md bg-error hover:bg-error-dark text-white px-3 py-2 text-sm" title="Reject">
                 <i class="fa-regular fa-circle-xmark"></i> Reject
               </button>
             </form>
           </div>
         </div>
         {% empty %}
-        <div class="col-span-full flex items-center justify-center p-8 rounded-lg bg-gray-800/70 border border-gray-600/30 text-center backdrop-filter backdrop-blur-sm min-h-[200px]">
+        <div class="col-span-full flex items-center justify-center p-6 rounded-md bg-dark border border-secondary-light text-center min-h-[180px]">
             <div>
                 <svg class="w-16 h-16 mx-auto text-gray-400 mb-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -219,21 +219,21 @@
     </section>
 
     <!-- Memories (Grouped by Event) -->
-    <section class="rounded-2xl bg-gray-900/40 border border-white/10 backdrop-blur-xl shadow-2xl overflow-hidden" data-aos="fade-up">
-      <div class="flex items-center justify-between p-5 border-b border-white/10">
+    <section class="rounded-md bg-dark-light border border-secondary-light overflow-hidden">
+      <div class="flex items-center justify-between p-4 border-b border-secondary-light">
         <div>
           <h2 class="text-xl font-bold text-white">Event Memories</h2>
-          <p class="text-sm text-indigo-200/80">Grouped under each event</p>
+          <p class="text-sm text-secondary-light">Grouped under each event</p>
         </div>
       </div>
 
-      <div class="p-5 space-y-6">
+      <div class="p-4 space-y-4">
         {% for event in events %}
-        <div class="rounded-xl bg-white/5 border border-white/10 p-4">
+        <div class="rounded-md bg-dark border border-secondary-light p-3">
           <div class="flex items-center justify-between gap-4">
             <div class="min-w-0">
               <h3 class="text-white font-semibold truncate">{{ event.title }}</h3>
-              <p class="text-sm text-indigo-200/80"><i class="fa-regular fa-calendar mr-1"></i>{{ event.date }}</p>
+              <p class="text-sm text-secondary-light"><i class="fa-regular fa-calendar mr-1"></i>{{ event.date }}</p>
             </div>
             <div class="flex items-center gap-2 shrink-0">
               <a href="{% url 'event_memories' event.id %}" title="Open Memories Page" class="icon-btn"><i class="fa-regular fa-images"></i></a>
@@ -242,28 +242,28 @@
           </div>
           <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {% for memory in event.eventmemory_set.all|slice:":6" %}
-            <div class="rounded-lg overflow-hidden bg-black/20 border border-white/10">
+            <div class="rounded-md overflow-hidden bg-dark border border-secondary-light">
               {% if memory.image %}
               <img src="{{ memory.image.url }}" alt="{{ memory.caption|default:'Memory' }}" class="w-full h-40 object-cover">
               {% endif %}
               <div class="p-3">
                 {% if memory.caption %}
-                <p class="text-sm text-indigo-100/90 line-clamp-2"><i class="fa-regular fa-comment-dots mr-1"></i>{{ memory.caption }}</p>
+                <p class="text-sm text-light line-clamp-2"><i class="fa-regular fa-comment-dots mr-1"></i>{{ memory.caption }}</p>
                 {% else %}
-                <p class="text-sm text-indigo-100/60 italic">No caption</p>
+                <p class="text-sm text-secondary-light italic">No caption</p>
                 {% endif %}
                 {% if memory.shared_by %}
-                <p class="mt-1 text-xs text-indigo-200/60">by {{ memory.shared_by.username }}</p>
+                <p class="mt-1 text-xs text-secondary-light">by {{ memory.shared_by.username }}</p>
                 {% endif %}
               </div>
             </div>
             {% empty %}
-            <div class="p-4 text-indigo-200/80 bg-black/20 rounded-lg border border-white/10 sm:col-span-2 lg:col-span-3">No memories yet for this event.</div>
+            <div class="p-3 text-secondary-light bg-dark rounded-md border border-secondary-light sm:col-span-2 lg:col-span-3">No memories yet for this event.</div>
             {% endfor %}
           </div>
         </div>
         {% empty %}
-        <div class="col-span-full flex items-center justify-center p-8 rounded-lg bg-gray-800/70 border border-gray-600/30 text-center backdrop-filter backdrop-blur-sm min-h-[200px]">
+        <div class="col-span-full flex items-center justify-center p-6 rounded-md bg-dark border border-secondary-light text-center min-h-[180px]">
             <div>
                 <svg class="w-16 h-16 mx-auto text-gray-400 mb-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -277,8 +277,8 @@
     </section>
 
     <!-- Footer Help -->
-    <section class="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl text-center shadow-2xl" data-aos="fade-up">
-      <p class="text-indigo-100/90">Need assistance? <a href="{% url 'contact' %}" class="underline decoration-indigo-400 hover:text-white">Contact support</a>.</p>
+    <section class="p-4 rounded-md bg-dark-light border border-secondary-light text-center">
+      <p class="text-light">Need assistance? <a href="{% url 'contact' %}" class="text-primary hover:text-primary-light">Contact support</a>.</p>
     </section>
 
   </div>
@@ -286,9 +286,9 @@
 
 <!-- Inline helpers -->
 <style>
-  .custom-scrollbar::-webkit-scrollbar{ width:8px; height:8px; }
-  .custom-scrollbar::-webkit-scrollbar-thumb{ background: linear-gradient(180deg, rgba(99,102,241,.8), rgba(168,85,247,.8)); border-radius:12px; }
-  .icon-btn{ @apply inline-flex items-center justify-center h-10 w-10 rounded-lg bg-white/5 border border-white/10 text-indigo-200 hover:text-white hover:bg-white/10 transition; }
+  .custom-scrollbar::-webkit-scrollbar{ width:6px; height:6px; }
+  .custom-scrollbar::-webkit-scrollbar-thumb{ background: var(--secondary); border-radius:3px; }
+  .icon-btn{ @apply inline-flex items-center justify-center h-8 w-8 rounded-md bg-dark border border-secondary-light text-secondary-light hover:text-light hover:border-primary; }
 </style>
 
 <!-- Client-side filtering (quick UX win) -->
